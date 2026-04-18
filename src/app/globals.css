@@ -1163,3 +1163,151 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
     width: 52px; height: 52px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Species Index Grid
+   ═══════════════════════════════════════════════════════════════ */
+
+.species-index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+}
+
+.species-index-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.species-index-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--species-accent, var(--c-teal));
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.species-index-card__body {
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+}
+
+.species-index-card__body h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+}
+
+.species-index-card__tactic {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0 0 0.75rem;
+}
+
+.species-index-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.species-index-card__temp {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-teal);
+  background: rgba(0, 200, 180, 0.08);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.species-index-card__months {
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.02em;
+}
+
+.species-index-card__legal {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+  line-height: 1.4;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Species Detail Hero
+   ═══════════════════════════════════════════════════════════════ */
+
+.species-detail-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  align-items: center;
+  padding: var(--space-md) 0;
+}
+
+.species-detail-hero__tactic {
+  font-size: 1rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 0.5rem 0 1rem;
+}
+
+.species-detail-hero__badges {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.species-badge {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid;
+  border-radius: var(--radius-full);
+  color: var(--ink-soft);
+}
+
+/* Month visual grid */
+.species-month-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.4rem;
+}
+
+.species-month-cell {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.5rem 0.25rem;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--ink-muted);
+  transition: background 0.2s ease;
+}
+
+.species-month-cell--active {
+  font-weight: 600;
+  border-color: transparent;
+}
+
+@media (max-width: 700px) {
+  .species-index-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .species-detail-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .species-month-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

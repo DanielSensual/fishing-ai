@@ -1,4 +1,4 @@
-import { spots } from "@/lib/spots";
+import { spots, speciesCatalog } from "@/lib/spots";
 import { regions } from "@/lib/regions";
 import type { MetadataRoute } from "next";
 
@@ -14,6 +14,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "hourly",
       priority: 1,
+    },
+    {
+      url: `${BASE_URL}/species`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
     },
   ];
 
@@ -33,5 +39,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...homepage, ...regionPages, ...spotPages];
+  // Species detail pages
+  const speciesKeys = Object.keys(speciesCatalog);
+  const speciesPages: MetadataRoute.Sitemap = speciesKeys.map((key) => ({
+    url: `${BASE_URL}/species/${key}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.75,
+  }));
+
+  return [...homepage, ...regionPages, ...spotPages, ...speciesPages];
 }

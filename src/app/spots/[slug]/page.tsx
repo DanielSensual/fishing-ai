@@ -277,7 +277,11 @@ export default async function SpotPage({ params }: SpotPageProps) {
               const species = getSpeciesByKey(key);
               return (
                 <div key={species.key}>
-                  <strong>{species.name}</strong>
+                  <strong>
+                    <Link href={`/species/${species.key}`} style={{ color: "var(--c-teal)" }}>
+                      {species.name}
+                    </Link>
+                  </strong>
                   <p>{species.tactic}</p>
                   <small>{species.legalNote}</small>
                 </div>
