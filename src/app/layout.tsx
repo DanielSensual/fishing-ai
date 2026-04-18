@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import CaptainChat from "./components/CaptainChat";
+import { Analytics } from "@vercel/analytics/next";
 
 const headingFont = Space_Grotesk({
   variable: "--font-heading",
@@ -73,6 +74,7 @@ export default function RootLayout({
       <body>
         {children}
         <CaptainChat />
+        <Analytics />
       </body>
     </html>
   );
