@@ -282,7 +282,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
         </div>
 
         <div className="map-layout">
-          <MapWrapper spots={mapSpots} />
+          <MapWrapper spots={mapSpots} center={[region.center.lng, region.center.lat]} zoom={region.zoom} />
 
           <aside className="map-sidebar">
             <h3>Live notes</h3>

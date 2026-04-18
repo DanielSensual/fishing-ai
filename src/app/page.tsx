@@ -7,7 +7,7 @@ import {
   getSpeciesByKey,
   getSpotBySlug,
 } from "@/lib/fishing-data";
-import { regions } from "@/lib/regions";
+import { regions, getDefaultRegion } from "@/lib/regions";
 import { getBaitShopsByRegion } from "@/lib/bait-shops";
 import AnimationProvider from "./components/AnimationProvider";
 import ScoreArc from "./components/ScoreArc";
@@ -48,8 +48,9 @@ function ConditionStat({
 }
 
 export default async function Home() {
+  const region = getDefaultRegion();
   const dashboard = await getDashboardData();
-  const baitShops = getBaitShopsByRegion("space-coast");
+  const baitShops = getBaitShopsByRegion(region.slug);
   const topSpecies = dashboard.speciesOutlook.slice(0, 6);
   const topSpotSlug = dashboard.overview.topSpot?.spot.slug;
   const topSpot = topSpotSlug ? getSpotBySlug(topSpotSlug) : undefined;
@@ -233,7 +234,7 @@ export default async function Home() {
         </div>
 
         <div className="map-layout">
-          <MapWrapper spots={mapSpots} />
+          <MapWrapper spots={mapSpots} center={[region.center.lng, region.center.lat]} zoom={region.zoom} />
 
           <aside className="map-sidebar">
             <h3>Live notes</h3>
