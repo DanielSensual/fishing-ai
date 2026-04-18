@@ -88,6 +88,9 @@ export default async function Home() {
             <a href="#map">Map</a>
             <a href="#spots">Spots</a>
             <a href="#species">Species</a>
+            <Link href="/calendar">Calendar</Link>
+            <Link href="/species">Species Guide</Link>
+            <Link href="/gear">Gear Store</Link>
             <a href="#bait-shops">Bait shops</a>
             <a href="#rules">Rules</a>
           </nav>
