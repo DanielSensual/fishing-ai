@@ -34,15 +34,28 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://fishing-ai-nine.vercel.app"),
   title: {
-    default: "Fishing AI | Cape Canaveral Command Deck",
-    template: "%s | Fishing AI",
+    default: "Bite Atlas | Florida Fishing Intelligence",
+    template: "%s | Bite Atlas",
   },
   description:
-    "Live Cape Canaveral fishing intelligence — real-time scores for Jetty Park, Cocoa Beach, Playalinda, and Port Canaveral.",
+    "Live Florida fishing intelligence — real-time spot scores, tide-matched tactics, species guides, and bait shop directory across Space Coast, Indian River, Daytona, Tampa Bay, Treasure Coast, and Jacksonville.",
+  openGraph: {
+    type: "website",
+    siteName: "Bite Atlas",
+    title: "Bite Atlas | Florida Fishing Intelligence",
+    description:
+      "AI-scored fishing spots across 6 Florida regions. Live conditions, detailed tactics, and real bait shop intel.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bite Atlas | Florida Fishing Intelligence",
+    description:
+      "AI-scored fishing spots across 6 Florida regions. Live conditions, detailed tactics, and real bait shop intel.",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Fishing AI",
+    title: "Bite Atlas",
   },
 };
 

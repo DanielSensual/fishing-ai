@@ -38,6 +38,7 @@ function spotImageExists(slug: string): boolean {
     "sebastian-inlet", "mosquito-lagoon", "skyway-fishing-pier",
     "ponce-inlet-jetty", "jupiter-inlet", "fort-de-soto-park",
     "mayport-jetties", "jacksonville-beach-pier", "fort-pierce-inlet",
+    "new-smyrna-beach-surf", "daytona-beach-pier", "gandy-bridge",
   ];
   return knownImages.includes(slug);
 }
@@ -146,6 +147,16 @@ export default async function SpotPage({ params }: SpotPageProps) {
           <h2>Before you go</h2>
           <ul className="bullet-list">
             {spot.access.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </article>
+
+        <article className="detail-card">
+          <span className="eyebrow">Why this spot</span>
+          <h2>Highlights</h2>
+          <ul className="bullet-list">
+            {spot.highlights.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
