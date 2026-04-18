@@ -135,7 +135,7 @@ export default async function Home() {
                   ? `${currentWaterTempF.toFixed(1)}°F`
                   : "Unavailable"
               }
-              helper="NOAA Trident Pier"
+              helper="NOAA CO-OPS 8721604"
             />
             <ConditionStat
               label="Nearshore wave"
@@ -147,7 +147,7 @@ export default async function Home() {
               helper={
                 typeof nearshoreDominantPeriod === "number"
                   ? `${nearshoreDominantPeriod}s period`
-                  : "NDBC 41113"
+                  : "NDBC nearshore"
               }
             />
             <ConditionStat
@@ -208,7 +208,7 @@ export default async function Home() {
                 ? dashboard.conditions.activeAlerts.join(", ")
                 : "None active"}
             </strong>
-            <small>AMZ552 + Cape surf watchlist</small>
+            <small>Space Coast marine watchlist</small>
           </div>
         </div>
       </section>
@@ -233,16 +233,13 @@ export default async function Home() {
             <h3>Live notes</h3>
             <ul className="bullet-list">
               <li>
-                Jetty Park is the controlled-access, structure-heavy inlet
-                option when you want the easiest read on current.
+                Scores update with every page load using live NOAA data for Space Coast.
               </li>
               <li>
-                Cocoa and Playalinda are cleaner water and trough decisions. If
-                the surf line gets ugly, move or bail fast.
+                Each spot is scored based on local tide, water temp, wind, waves, and species windows.
               </li>
               <li>
-                Port Canaveral channel edges become better when you want current
-                seams and structure instead of a beach spread.
+                Tap any marker on the map for the full read and best window.
               </li>
             </ul>
             <div className="inline-source">
@@ -328,8 +325,8 @@ export default async function Home() {
             <h2>What is worth targeting</h2>
           </div>
           <p>
-            The score leans on live conditions. The tactic text leans on Space
-            Coast heuristics, not generic national app copy.
+            The score leans on live conditions. The tactic text leans on
+            regional heuristics, not generic national app copy.
           </p>
         </div>
 
@@ -418,8 +415,7 @@ export default async function Home() {
               ))}
             </ul>
             <p>
-              The product angle is simple: official data + local Space Coast
-              heuristics + your own future logs.
+              Official NOAA data + regional fishing heuristics for Space Coast.
             </p>
           </aside>
         </div>

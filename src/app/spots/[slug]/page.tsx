@@ -32,6 +32,16 @@ function ToneChip({
   );
 }
 
+function spotImageExists(slug: string): boolean {
+  const knownImages = [
+    "jetty-park-pier", "cocoa-beach-surf", "port-canaveral-channel-edge", "playalinda-north-beaches",
+    "sebastian-inlet", "mosquito-lagoon", "skyway-fishing-pier",
+    "ponce-inlet-jetty", "jupiter-inlet", "fort-de-soto-park",
+    "mayport-jetties", "jacksonville-beach-pier", "fort-pierce-inlet",
+  ];
+  return knownImages.includes(slug);
+}
+
 export default async function SpotPage({ params }: SpotPageProps) {
   const { slug } = await params;
   const spot = getSpotBySlug(slug);
@@ -40,7 +50,7 @@ export default async function SpotPage({ params }: SpotPageProps) {
     notFound();
   }
 
-  const dashboard = await getDashboardData();
+  const dashboard = await getDashboardData(spot.region);
   const spotScore = dashboard.spotScores.find(
     (entry) => entry.spot.slug === slug
   );
@@ -74,23 +84,25 @@ export default async function SpotPage({ params }: SpotPageProps) {
       <AnimationProvider />
 
       <div className="detail-shell__topline">
-        <Link href="/">← Back to dashboard</Link>
+        <Link href={spot.region === "space-coast" ? "/" : `/region/${spot.region}`}>← Back to dashboard</Link>
         <small>
           Updated{" "}
           {formatDashboardTimestamp(dashboard.conditions.generatedAt)}
         </small>
       </div>
 
-      <div className="detail-hero__banner" data-animate>
-        <Image
-          src={`/images/spots/${spot.slug}.png`}
-          alt={spot.name}
-          width={1200}
-          height={500}
-          priority
-          style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-xl)', objectFit: 'cover', maxHeight: '320px' }}
-        />
-      </div>
+      {spotImageExists(spot.slug) && (
+        <div className="detail-hero__banner" data-animate>
+          <Image
+            src={`/images/spots/${spot.slug}.png`}
+            alt={spot.name}
+            width={1200}
+            height={500}
+            priority
+            style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-xl)', objectFit: 'cover', maxHeight: '320px' }}
+          />
+        </div>
+      )}
 
       <section className="detail-hero" data-animate>
         <div>
