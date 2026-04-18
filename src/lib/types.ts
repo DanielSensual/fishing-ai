@@ -60,6 +60,18 @@ export interface RuleCard {
   href: string;
 }
 
+export interface BaitShop {
+  name: string;
+  region: string;
+  address: string;
+  phone: string;
+  hours: string;
+  /** What they carry */
+  carries: string[];
+  /** Optional Google Maps link */
+  mapsUrl?: string;
+}
+
 export interface TideEvent {
   time: Date;
   localTimeLabel: string;

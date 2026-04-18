@@ -529,8 +529,9 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
 
 .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .card-grid--species { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.card-grid--shops { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-.spot-card, .species-card, .rule-card {
+.spot-card, .species-card, .rule-card, .shop-card {
   display: grid;
   gap: 14px;
   padding: 0;
@@ -612,14 +613,66 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
   border-color: rgba(20, 184, 166, 0.3);
 }
 
-.spot-card__link, .rule-card a, .detail-shell a {
+.spot-card__link, .rule-card a, .detail-shell a, .shop-card__link {
   color: var(--tidal-teal);
   font-weight: 700;
 }
 
-.spot-card__link:hover, .rule-card a:hover, .detail-shell a:hover {
+.spot-card__link:hover, .rule-card a:hover, .detail-shell a:hover, .shop-card__link:hover {
   color: #5ce0d0;
   transform: translateY(-1px);
+}
+
+/* ── Shop Cards ── */
+
+.shop-card {
+  padding: 20px !important;
+}
+
+.shop-card__header {
+  display: grid;
+  gap: 6px;
+}
+
+.shop-card__header h3 {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.shop-card__hours {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent-teal);
+  background: hsla(174, 72%, 40%, 0.12);
+  padding: 4px 10px;
+  border-radius: 6px;
+  line-height: 1.4;
+}
+
+.shop-card__address {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.shop-card__phone {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.shop-card__phone:hover {
+  color: #f0c860;
+}
+
+.shop-card__link {
+  font-size: 0.85rem;
+  text-decoration: none;
 }
 
 /* ── Species Cards ── */
@@ -786,7 +839,7 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
   .hero__grid, .map-layout, .rules-layout, .detail-hero {
     grid-template-columns: 1fr;
   }
-  .card-grid--species, .rule-grid {
+  .card-grid--species, .card-grid--shops, .rule-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -801,7 +854,7 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
 
   .hero__topline, .section__head, .detail-shell__topline,
   .spot-card__header, .species-card__header,
-  .detail-grid, .card-grid, .card-grid--species, .rule-grid {
+  .detail-grid, .card-grid, .card-grid--species, .card-grid--shops, .rule-grid {
     grid-template-columns: 1fr;
   }
 

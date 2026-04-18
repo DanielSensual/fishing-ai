@@ -9,6 +9,7 @@ import {
   getSpotBySlug,
 } from "@/lib/fishing-data";
 import { regions, getRegionBySlug } from "@/lib/regions";
+import { getBaitShopsByRegion } from "@/lib/bait-shops";
 import AnimationProvider from "../../components/AnimationProvider";
 import ScoreArc from "../../components/ScoreArc";
 import MapWrapper from "../../components/MapWrapper";
@@ -79,6 +80,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
   }
 
   const dashboard = await getDashboardData(slug);
+  const baitShops = getBaitShopsByRegion(slug);
   const topSpecies = dashboard.speciesOutlook.slice(0, 8);
   const topSpotSlug = dashboard.overview.topSpot?.spot.slug;
   const topSpot = topSpotSlug ? getSpotBySlug(topSpotSlug) : undefined;
@@ -117,6 +119,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
             <a href="#map">Map</a>
             <a href="#spots">Spots</a>
             <a href="#species">Species</a>
+            <a href="#bait-shops">Bait shops</a>
             <a href="#rules">Rules</a>
           </nav>
         </div>
@@ -405,6 +408,50 @@ export default async function RegionPage({ params }: RegionPageProps) {
                   <dd>{entry.species.legalNote}</dd>
                 </div>
               </dl>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Bait Shops ─── */}
+      <section className="section" id="bait-shops" data-animate>
+        <div className="section__head">
+          <div>
+            <span className="eyebrow">Bait shops + hours</span>
+            <h2>Where to gear up</h2>
+          </div>
+          <p>
+            Real hours, real phone numbers for {region.name}. Call ahead for live bait
+            availability — it changes with the tide.
+          </p>
+        </div>
+
+        <div className="card-grid card-grid--shops" data-animate-stagger>
+          {baitShops.map((shop) => (
+            <article className="shop-card" key={shop.name}>
+              <div className="shop-card__header">
+                <h3>{shop.name}</h3>
+                <span className="shop-card__hours">{shop.hours}</span>
+              </div>
+              <address className="shop-card__address">{shop.address}</address>
+              <a className="shop-card__phone" href={`tel:${shop.phone.replace(/[^\d+]/g, "")}`}>
+                {shop.phone}
+              </a>
+              <div className="tag-row">
+                {shop.carries.slice(0, 4).map((item) => (
+                  <span className="tag" key={item}>{item}</span>
+                ))}
+              </div>
+              {shop.mapsUrl ? (
+                <a
+                  className="shop-card__link"
+                  href={shop.mapsUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Open in Maps →
+                </a>
+              ) : null}
             </article>
           ))}
         </div>
