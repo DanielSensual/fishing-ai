@@ -39,6 +39,7 @@ function spotImageExists(slug: string): boolean {
     "ponce-inlet-jetty", "jupiter-inlet", "fort-de-soto-park",
     "mayport-jetties", "jacksonville-beach-pier", "fort-pierce-inlet",
     "new-smyrna-beach-surf", "daytona-beach-pier", "gandy-bridge",
+    "indian-river-melbourne", "lake-worth-pier",
   ];
   return knownImages.includes(slug);
 }
