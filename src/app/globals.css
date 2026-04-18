@@ -491,12 +491,40 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
 .spot-card, .species-card, .rule-card {
   display: grid;
   gap: 14px;
-  padding: 24px;
+  padding: 0;
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   background: var(--glass-bg-strong);
   backdrop-filter: blur(16px);
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+.spot-card > *:not(.spot-card__image),
+.species-card > *:not(.species-card__image),
+.rule-card > * {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.spot-card > *:last-child,
+.species-card > *:last-child,
+.rule-card > *:last-child {
+  padding-bottom: 24px;
+}
+
+.spot-card__image,
+.species-card__image {
+  overflow: hidden;
+  line-height: 0;
+}
+
+.detail-hero__banner {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  line-height: 0;
+  margin-bottom: -8px;
 }
 
 .spot-card:hover, .species-card:hover, .rule-card:hover {

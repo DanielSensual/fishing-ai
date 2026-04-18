@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import {
   formatDashboardTimestamp,
@@ -260,6 +261,15 @@ export default async function Home() {
         <div className="card-grid" data-animate-stagger>
           {dashboard.spotScores.map((entry) => (
             <article className="spot-card" key={entry.spot.slug}>
+              <div className="spot-card__image">
+                <Image
+                  src={`/images/spots/${entry.spot.slug}.png`}
+                  alt={entry.spot.name}
+                  width={600}
+                  height={340}
+                  style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0', objectFit: 'cover', maxHeight: '200px' }}
+                />
+              </div>
               <div className="spot-card__header">
                 <div>
                   <span className="eyebrow">{entry.spot.area}</span>
@@ -312,6 +322,15 @@ export default async function Home() {
         <div className="card-grid card-grid--species" data-animate-stagger>
           {topSpecies.map((entry) => (
             <article className="species-card" key={entry.species.key}>
+              <div className="species-card__image">
+                <Image
+                  src={`/images/species/${entry.species.key}.png`}
+                  alt={entry.species.name}
+                  width={600}
+                  height={340}
+                  style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0', objectFit: 'cover', maxHeight: '180px' }}
+                />
+              </div>
               <div className="species-card__header">
                 <div>
                   <span className="eyebrow">

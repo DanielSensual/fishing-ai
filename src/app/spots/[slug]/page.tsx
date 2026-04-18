@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import {
@@ -78,6 +79,17 @@ export default async function SpotPage({ params }: SpotPageProps) {
           Updated{" "}
           {formatDashboardTimestamp(dashboard.conditions.generatedAt)}
         </small>
+      </div>
+
+      <div className="detail-hero__banner" data-animate>
+        <Image
+          src={`/images/spots/${spot.slug}.png`}
+          alt={spot.name}
+          width={1200}
+          height={500}
+          priority
+          style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-xl)', objectFit: 'cover', maxHeight: '320px' }}
+        />
       </div>
 
       <section className="detail-hero" data-animate>
