@@ -211,48 +211,78 @@ export const spots: SpotDefinition[] = [
     region: "space-coast",
     type: "Pier",
     summary:
-      "Best first-stop when you want structure, current, easy access, and a clean read on the inlet.",
+      "The Malcolm E. McLouth Fishing Pier — a 1,200-foot lit pier at the mouth of Port Canaveral inlet. Structure, current, deep water, and cruise ship wakes all in one controlled-access spot. Best first-stop when the inlet is alive.",
     mapPosition: { top: "34%", left: "57%" },
     coordinates: { lat: 28.4082, lng: -80.5922 },
     access: [
-      "Jetty Park day-use access runs 7:00 AM to 9:00 PM.",
-      "Parking requires a pass through Port Canaveral.",
-      "Port rules say a license is not required from the pier.",
-      "Night fishing is permitted from the pier only.",
+      "Park hours are 7:00 AM to 9:00 PM daily. Night fishing is permitted from the pier only (30 min before sunset to 30 min after sunrise).",
+      "Parking requires a day pass or annual pass — purchase online at shop.portcanaveral.com or at the gate with credit card. No cash accepted.",
+      "No fishing license is required to fish from the pier (Florida pier exemption).",
+      "Shore fishing inside the park is prohibited — pier and jetty rocks only.",
+      "No pets allowed on the pier or beach.",
+      "No glass containers on the beach. No bicycles, skateboards, or scooters on the pier or boardwalk.",
+      "Fish-cleaning stations with running water are available at the pier base.",
+      "Campground store open Mon–Thu & Sat–Sun 9 AM – 6 PM, Fridays 9 AM – 7 PM. Sells ice, snacks, and basic tackle.",
     ],
     caution: [
-      "The inlet stacks current and wind quickly.",
-      "Cruise traffic and pier crowding can compress your casting lanes.",
+      "The inlet stacks current and wind quickly — if the outgoing tide meets a strong NE wind, the seam gets violent fast.",
+      "Cruise ship traffic creates large wakes that can swamp the jetty rocks. Watch for departure schedules.",
+      "Pier crowding on weekends can compress casting lanes. Arrive before 7 AM or fish the weekdays.",
+      "Port Canaveral is a slow-speed, minimum-wake zone — but commercial vessels still throw significant wake at the inlet mouth.",
+      "Strong current during tide changes can snap light leaders. Use 20–30 lb fluorocarbon on anything near the rocks.",
     ],
     highlights: [
-      "Strong structure bite for sheepshead and drum.",
-      "Easy read on whether the port cut is alive.",
-      "Good fallback when the open beach is too messy.",
+      "Strong year-round structure bite — sheepshead, black drum, and mangrove snapper hold on the pilings.",
+      "One of the best land-based snook spots on the Space Coast during low-light periods.",
+      "Incoming tides bring mackerel, tarpon, cobia, and bluefish chasing bait through the inlet.",
+      "Outgoing tides flush shrimp and crustaceans from the port basin — the jetty rocks become a feeding lane.",
+      "Slack tide is when to fish tight to the structure — current drops and presentations get precise.",
+      "Good fallback when the open beach is blown out. The inlet provides shelter from direct swells.",
     ],
     tactics: [
       {
-        title: "Sheepshead / drum",
+        title: "Sheepshead on structure",
         detail:
-          "Fish tight to the pier structure with shrimp or crab-style baits on short leaders.",
+          "Fish tight to the pier pilings with live fiddler crabs or shrimp on a 1/0 hook with a short 18-inch fluorocarbon leader. Use just enough weight to hold bottom. They hit light — set the hook on the second tap, not the first.",
       },
       {
-        title: "Pompano / whiting edge",
+        title: "Black drum — bottom rig",
         detail:
-          "Work the cleaner side of the current with a double-drop rig before reaching for a long cast.",
+          "Fish-finder rig with a 3 oz egg sinker, 30 lb leader, and a 3/0 circle hook baited with half a blue crab or cut shrimp. Cast near the jetty rocks on the incoming tide. Let them eat — circle hooks set themselves.",
       },
       {
-        title: "Snook low light",
+        title: "Pompano & whiting — double drop",
         detail:
-          "Look for bait in the seam and fish the change in current, not the dead center of the cut.",
+          "Standard double-dropper rig with No. 2 hooks and a 2–4 oz pyramid sinker. Bait with sand fleas, fresh-peeled shrimp, or Fishbites. Work the clean side of the current, not the dead center of the cut. Short casts outproduce long bombs here.",
+      },
+      {
+        title: "Snook — low light free-line",
+        detail:
+          "Free-line a live pin fish or finger mullet with no weight on 20 lb fluorocarbon leader along the current seam during dusk or after dark. Fish the change in current direction, not the center of the flow. Set the drag loose — they'll run.",
+      },
+      {
+        title: "Spanish mackerel — incoming tide",
+        detail:
+          "When the tide pushes in and you see bait flipping on the surface, throw a 1 oz silver spoon or Got-Cha plug on a 7.5 ft medium rod with 12 lb braid. Fast retrieve, no pause. The bite is violent and short — be ready with a second cast.",
+      },
+      {
+        title: "Mangrove snapper — night bite",
+        detail:
+          "At night under the pier lights, free-line live shrimp on a small 1/0 hook with 15 lb fluoro leader. Let it drift naturally into the shadow line. They're leader-shy — the lighter you go, the more you'll hook.",
+      },
+      {
+        title: "Bait collection",
+        detail:
+          "Throw a cast net in the sandy areas near the jetty base for pilchards and greenbacks. Or use a sabiki rig off the pier to load up on bait. Avoid casting the net near the rocks — you'll shred it.",
       },
     ],
-    primarySpecies: ["sheepshead", "black-drum", "pompano", "snook", "whiting"],
+    primarySpecies: ["sheepshead", "black-drum", "pompano", "snook", "whiting", "mangrove-snapper", "spanish-mackerel", "redfish"],
     preferredTides: ["incoming", "high"],
     preferredWindDirections: ["N", "NNE", "NE", "ENE", "E", "SE"],
     avoidWindDirections: [],
     idealWaveRangeFt: [1, 3.5],
     idealWaterTempRangeF: [68, 80],
-    lightPreference: "day",
+    lightPreference: "any",
     accessHours: { open: "07:00", close: "21:00" },
   },
   {
