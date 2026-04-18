@@ -68,12 +68,16 @@ export default function CaptainChat() {
         searchQueries: data.searchQueries,
       };
       setMessages((prev) => [...prev, captainMessage]);
-    } catch {
+    } catch (err) {
+      const message =
+        err instanceof Error && err.message
+          ? err.message
+          : "Lost connection to the feed. Try again in a moment.";
       setMessages((prev) => [
         ...prev,
         {
           role: "captain",
-          text: "Lost connection to the feed. Try again in a moment.",
+          text: message,
         },
       ]);
     } finally {
