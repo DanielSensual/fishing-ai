@@ -740,6 +740,28 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
   .map-container { min-height: 380px; }
 
   .hero__topline h1 { font-size: clamp(2.4rem, 10vw, 3.6rem); }
+
+  /* ── Mobile GPU Performance ── */
+  .signal-card,
+  .spot-card,
+  .species-card,
+  .rule-card,
+  .detail-card,
+  .metric-ribbon,
+  .sources-panel,
+  .map-sidebar,
+  .inline-source {
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* reduce map popup blur */
+  .maplibregl-popup-content {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
