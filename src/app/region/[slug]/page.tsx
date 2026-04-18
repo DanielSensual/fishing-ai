@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 import {
   formatDashboardTimestamp,
@@ -9,6 +10,7 @@ import {
   getSpotBySlug,
 } from "@/lib/fishing-data";
 import { regions, getRegionBySlug } from "@/lib/regions";
+import { spots } from "@/lib/spots";
 import { getBaitShopsByRegion } from "@/lib/bait-shops";
 import AnimationProvider from "../../components/AnimationProvider";
 import ScoreArc from "../../components/ScoreArc";
@@ -19,6 +21,25 @@ export const dynamic = "force-dynamic";
 type RegionPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: RegionPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const region = getRegionBySlug(slug);
+  if (!region) return {};
+
+  const regionSpots = spots.filter((s) => s.region === slug);
+  const spotNames = regionSpots.slice(0, 4).map((s) => s.name).join(", ");
+
+  return {
+    title: `${region.name} Fishing Intelligence`,
+    description: `Live fishing scores and tactics for ${region.name}, Florida — ${spotNames}. Real-time NOAA conditions, species outlook, and bait shop directory.`,
+    openGraph: {
+      title: `${region.name} Fishing Intelligence | Bite Atlas`,
+      description: `AI-scored fishing spots across ${region.name}. Live conditions, tide-matched tactics, and ${regionSpots.length} detailed spots.`,
+    },
+  };
+}
+
 
 function ToneChip({
   tone,

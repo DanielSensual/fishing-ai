@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
 import {
   formatDashboardTimestamp,
@@ -8,6 +9,7 @@ import {
   getSpeciesByKey,
   getSpotBySlug,
 } from "@/lib/fishing-data";
+import { getRegionBySlug } from "@/lib/regions";
 import AnimationProvider from "../../components/AnimationProvider";
 import ScoreArc from "../../components/ScoreArc";
 import MapWrapper from "../../components/MapWrapper";
@@ -17,6 +19,28 @@ export const dynamic = "force-dynamic";
 type SpotPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: SpotPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const spot = getSpotBySlug(slug);
+  if (!spot) return {};
+
+  const region = getRegionBySlug(spot.region);
+  const speciesNames = spot.primarySpecies.slice(0, 4).map((k) => {
+    const s = getSpeciesByKey(k);
+    return s.name;
+  }).join(", ");
+
+  return {
+    title: `${spot.name} — ${spot.area} Fishing`,
+    description: `${spot.summary.slice(0, 155)}... Target species: ${speciesNames}. Live conditions, access info, and detailed tactics.`,
+    openGraph: {
+      title: `${spot.name} | Bite Atlas`,
+      description: `Fishing intelligence for ${spot.name} in ${region?.name ?? spot.area}. ${spot.type} spot with ${spot.tactics.length} detailed tactics.`,
+      images: [`/images/spots/${spot.slug}.png`],
+    },
+  };
+}
 
 function ToneChip({
   tone,
@@ -81,8 +105,32 @@ export default async function SpotPage({ params }: SpotPageProps) {
     },
   ];
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    name: spot.name,
+    description: spot.summary,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: spot.coordinates.lat,
+      longitude: spot.coordinates.lng,
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: spot.area,
+      addressRegion: "FL",
+      addressCountry: "US",
+    },
+    touristType: "Fishing",
+    isAccessibleForFree: false,
+  };
+
   return (
     <main className="detail-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <AnimationProvider />
 
       <div className="detail-shell__topline">
