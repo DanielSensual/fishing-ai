@@ -5,6 +5,7 @@ import {
   Space_Grotesk,
 } from "next/font/google";
 import "./globals.css";
+import CaptainChat from "./components/CaptainChat";
 
 const headingFont = Space_Grotesk({
   variable: "--font-heading",
@@ -56,7 +57,10 @@ export default function RootLayout({
       className={`${headingFont.variable} ${bodyFont.variable} ${monoFont.variable}`}
       style={{ colorScheme: "dark" }}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <CaptainChat />
+      </body>
     </html>
   );
 }

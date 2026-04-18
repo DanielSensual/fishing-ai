@@ -41,3 +41,4 @@ yarn-error.log*
 next-env.d.ts
 ios/App/Pods
 ios/App/App/public
+.env.local
