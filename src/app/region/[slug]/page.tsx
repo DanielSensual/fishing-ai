@@ -52,16 +52,20 @@ function ConditionStat({
 }
 
 function spotImageExists(slug: string): boolean {
-  // Spots with images generated
   const knownImages = [
-    "jetty-park-pier", "cocoa-beach-surf", "port-canaveral-channel-edge", "playalinda-north-beaches"
+    "jetty-park-pier", "cocoa-beach-surf", "port-canaveral-channel-edge", "playalinda-north-beaches",
+    "sebastian-inlet", "mosquito-lagoon", "skyway-fishing-pier",
+    "ponce-inlet-jetty", "jupiter-inlet", "fort-de-soto-park",
+    "mayport-jetties", "jacksonville-beach-pier", "fort-pierce-inlet",
   ];
   return knownImages.includes(slug);
 }
 
 function speciesImageExists(key: string): boolean {
   const knownImages = [
-    "snook", "pompano", "whiting", "black-drum", "sheepshead", "redfish"
+    "snook", "pompano", "whiting", "black-drum", "sheepshead", "redfish",
+    "seatrout", "tarpon", "mangrove-snapper", "jack-crevalle", "flounder",
+    "spanish-mackerel", "cobia", "tripletail",
   ];
   return knownImages.includes(key);
 }
