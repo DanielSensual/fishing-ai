@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   IBM_Plex_Mono,
   IBM_Plex_Sans,
@@ -23,14 +23,26 @@ const monoFont = IBM_Plex_Mono({
   weight: ["400", "500", "600"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#060d18",
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://fishingai.vercel.app"),
+  metadataBase: new URL("https://fishing-ai-nine.vercel.app"),
   title: {
     default: "Fishing AI | Cape Canaveral Command Deck",
     template: "%s | Fishing AI",
   },
   description:
     "Live Cape Canaveral fishing intelligence — real-time scores for Jetty Park, Cocoa Beach, Playalinda, and Port Canaveral.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Fishing AI",
+  },
 };
 
 export default function RootLayout({
