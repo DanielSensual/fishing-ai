@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 import {
   formatDashboardTimestamp,
@@ -7,12 +8,16 @@ import {
   getSpeciesByKey,
   getSpotBySlug,
 } from "@/lib/fishing-data";
-import { regions } from "@/lib/regions";
-import AnimationProvider from "./components/AnimationProvider";
-import ScoreArc from "./components/ScoreArc";
-import MapWrapper from "./components/MapWrapper";
+import { regions, getRegionBySlug } from "@/lib/regions";
+import AnimationProvider from "../../components/AnimationProvider";
+import ScoreArc from "../../components/ScoreArc";
+import MapWrapper from "../../components/MapWrapper";
 
 export const dynamic = "force-dynamic";
+
+type RegionPageProps = {
+  params: Promise<{ slug: string }>;
+};
 
 function ToneChip({
   tone,
@@ -46,9 +51,31 @@ function ConditionStat({
   );
 }
 
-export default async function Home() {
-  const dashboard = await getDashboardData();
-  const topSpecies = dashboard.speciesOutlook.slice(0, 6);
+function spotImageExists(slug: string): boolean {
+  // Spots with images generated
+  const knownImages = [
+    "jetty-park-pier", "cocoa-beach-surf", "port-canaveral-channel-edge", "playalinda-north-beaches"
+  ];
+  return knownImages.includes(slug);
+}
+
+function speciesImageExists(key: string): boolean {
+  const knownImages = [
+    "snook", "pompano", "whiting", "black-drum", "sheepshead", "redfish"
+  ];
+  return knownImages.includes(key);
+}
+
+export default async function RegionPage({ params }: RegionPageProps) {
+  const { slug } = await params;
+  const region = getRegionBySlug(slug);
+  
+  if (!region) {
+    notFound();
+  }
+
+  const dashboard = await getDashboardData(slug);
+  const topSpecies = dashboard.speciesOutlook.slice(0, 8);
   const topSpotSlug = dashboard.overview.topSpot?.spot.slug;
   const topSpot = topSpotSlug ? getSpotBySlug(topSpotSlug) : undefined;
   const currentWaterTempF = dashboard.conditions.currentWaterTempF;
@@ -79,7 +106,7 @@ export default async function Home() {
       <section className="hero">
         <div className="hero__topline">
           <div>
-            <span className="eyebrow">Florida fishing command deck</span>
+            <span className="eyebrow">{region.name} command deck</span>
             <h1>Fishing AI</h1>
           </div>
           <nav className="hero__nav" aria-label="Primary">
@@ -96,7 +123,7 @@ export default async function Home() {
             <Link
               key={r.slug}
               href={r.slug === "space-coast" ? "/" : `/region/${r.slug}`}
-              className={`region-pill${r.slug === "space-coast" ? " region-pill--active" : ""}`}
+              className={`region-pill${r.slug === slug ? " region-pill--active" : ""}`}
             >
               {r.shortName}
             </Link>
@@ -135,7 +162,7 @@ export default async function Home() {
                   ? `${currentWaterTempF.toFixed(1)}°F`
                   : "Unavailable"
               }
-              helper="NOAA Trident Pier"
+              helper={`NOAA Station ${region.waterTempStation}`}
             />
             <ConditionStat
               label="Nearshore wave"
@@ -147,7 +174,7 @@ export default async function Home() {
               helper={
                 typeof nearshoreDominantPeriod === "number"
                   ? `${nearshoreDominantPeriod}s period`
-                  : "NDBC 41113"
+                  : region.buoyNearshore ? `NDBC ${region.buoyNearshore}` : "No buoy"
               }
             />
             <ConditionStat
@@ -208,7 +235,7 @@ export default async function Home() {
                 ? dashboard.conditions.activeAlerts.join(", ")
                 : "None active"}
             </strong>
-            <small>AMZ552 + Cape surf watchlist</small>
+            <small>{region.marineZone} watchlist</small>
           </div>
         </div>
       </section>
@@ -233,16 +260,13 @@ export default async function Home() {
             <h3>Live notes</h3>
             <ul className="bullet-list">
               <li>
-                Jetty Park is the controlled-access, structure-heavy inlet
-                option when you want the easiest read on current.
+                Scores update with every page load using live NOAA data for {region.name}.
               </li>
               <li>
-                Cocoa and Playalinda are cleaner water and trough decisions. If
-                the surf line gets ugly, move or bail fast.
+                Each spot is scored based on local tide, water temp, wind, waves, and species windows.
               </li>
               <li>
-                Port Canaveral channel edges become better when you want current
-                seams and structure instead of a beach spread.
+                Tap any marker on the map for the full read and best window.
               </li>
             </ul>
             <div className="inline-source">
@@ -267,7 +291,7 @@ export default async function Home() {
             <h2>Live score by location</h2>
           </div>
           <p>
-            This is the actual decision layer: score, next window, why it is
+            Decision layer for {region.name}: score, next window, why it is
             working, and where the friction is.
           </p>
         </div>
@@ -275,15 +299,17 @@ export default async function Home() {
         <div className="card-grid" data-animate-stagger>
           {dashboard.spotScores.map((entry) => (
             <article className="spot-card" key={entry.spot.slug}>
-              <div className="spot-card__image">
-                <Image
-                  src={`/images/spots/${entry.spot.slug}.png`}
-                  alt={entry.spot.name}
-                  width={600}
-                  height={340}
-                  style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0', objectFit: 'cover', maxHeight: '200px' }}
-                />
-              </div>
+              {spotImageExists(entry.spot.slug) && (
+                <div className="spot-card__image">
+                  <Image
+                    src={`/images/spots/${entry.spot.slug}.png`}
+                    alt={entry.spot.name}
+                    width={600}
+                    height={340}
+                    style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0', objectFit: 'cover', maxHeight: '200px' }}
+                  />
+                </div>
+              )}
               <div className="spot-card__header">
                 <div>
                   <span className="eyebrow">{entry.spot.area}</span>
@@ -328,23 +354,25 @@ export default async function Home() {
             <h2>What is worth targeting</h2>
           </div>
           <p>
-            The score leans on live conditions. The tactic text leans on Space
-            Coast heuristics, not generic national app copy.
+            The score leans on live conditions for {region.name}. The tactic text leans on
+            regional heuristics, not generic national app copy.
           </p>
         </div>
 
         <div className="card-grid card-grid--species" data-animate-stagger>
           {topSpecies.map((entry) => (
             <article className="species-card" key={entry.species.key}>
-              <div className="species-card__image">
-                <Image
-                  src={`/images/species/${entry.species.key}.png`}
-                  alt={entry.species.name}
-                  width={600}
-                  height={340}
-                  style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0', objectFit: 'cover', maxHeight: '180px' }}
-                />
-              </div>
+              {speciesImageExists(entry.species.key) && (
+                <div className="species-card__image">
+                  <Image
+                    src={`/images/species/${entry.species.key}.png`}
+                    alt={entry.species.name}
+                    width={600}
+                    height={340}
+                    style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0', objectFit: 'cover', maxHeight: '180px' }}
+                  />
+                </div>
+              )}
               <div className="species-card__header">
                 <div>
                   <span className="eyebrow">
@@ -418,8 +446,7 @@ export default async function Home() {
               ))}
             </ul>
             <p>
-              The product angle is simple: official data + local Space Coast
-              heuristics + your own future logs.
+              Official NOAA data + regional heuristics for {region.name}.
             </p>
           </aside>
         </div>

@@ -16,25 +16,41 @@ import type {
   WeatherHour,
 } from "./types";
 
+import { type RegionConfig, getRegionBySlug, getDefaultRegion } from "./regions";
+
 const EASTERN_TIME_ZONE = "America/New_York";
 const WEATHER_HEADERS = {
   "User-Agent": "FishingAI/0.1 (local prototype)",
   Accept: "application/geo+json, application/json",
 };
 
-const CAPE_POINTS_URL = "https://api.weather.gov/points/28.409,-80.588";
-const CAPE_HOURLY_URL =
-  "https://api.weather.gov/gridpoints/MLB/57,66/forecast/hourly";
-const CAPE_ALERTS_URL = "https://api.weather.gov/alerts/active?zone=AMZ552";
-const CAPE_MARINE_URL = "https://marine.weather.gov/MapClick.php?zoneid=AMZ552";
-const CAPE_SURF_URL =
-  "https://forecast.weather.gov/product.php?issuedby=MLB&product=SRF&site=MLB";
-const NOAA_WATER_TEMP_URL =
-  "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=FishingAI&date=latest&station=8721604&time_zone=lst_ldt&units=english&format=json";
-const NOAA_TIDES_URL =
+// ── Dynamic URL builders per region ──
+function buildPointsUrl(r: RegionConfig) {
+  return `https://api.weather.gov/points/${r.center.lat},${r.center.lng}`;
+}
+function buildHourlyUrl(r: RegionConfig) {
+  return `https://api.weather.gov/gridpoints/${r.nwsGridPoint}/forecast/hourly`;
+}
+function buildAlertsUrl(r: RegionConfig) {
+  return `https://api.weather.gov/alerts/active?zone=${r.marineZone}`;
+}
+function buildMarineUrl(r: RegionConfig) {
+  return `https://marine.weather.gov/MapClick.php?zoneid=${r.marineZone}`;
+}
+function buildSurfUrl(r: RegionConfig) {
+  return `https://forecast.weather.gov/product.php?issuedby=${r.nwsOffice}&product=SRF&site=${r.nwsOffice}`;
+}
+function buildWaterTempUrl(r: RegionConfig) {
+  return `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&application=FishingAI&date=latest&station=${r.waterTempStation}&time_zone=lst_ldt&units=english&format=json`;
+}
+const NOAA_TIDES_BASE =
   "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=FishingAI&begin_date=";
-const NDBC_NEARSHORE_URL = "https://www.ndbc.noaa.gov/data/realtime2/41113.txt";
-const NDBC_OFFSHORE_URL = "https://www.ndbc.noaa.gov/data/realtime2/41009.txt";
+function buildTidesUrl(r: RegionConfig, todayStamp: string, tomorrowStamp: string) {
+  return `${NOAA_TIDES_BASE}${todayStamp}&end_date=${tomorrowStamp}&datum=MLLW&station=${r.tideStation}&time_zone=lst_ldt&units=english&interval=hilo&format=json`;
+}
+function buildBuoyUrl(stationId: string) {
+  return `https://www.ndbc.noaa.gov/data/realtime2/${stationId}.txt`;
+}
 
 interface CapePointsResponse {
   properties?: {
@@ -713,7 +729,10 @@ function buildOverview(
   };
 }
 
-export async function getDashboardData(): Promise<DashboardData> {
+export async function getDashboardData(regionSlug?: string): Promise<DashboardData> {
+  const region = (regionSlug ? getRegionBySlug(regionSlug) : undefined) ?? getDefaultRegion();
+  const regionSpots = spots.filter((s) => s.region === region.slug);
+
   const now = new Date();
   const todayStamp = getTodayDateStamp(now);
   const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
@@ -730,26 +749,26 @@ export async function getDashboardData(): Promise<DashboardData> {
     marineHtml,
     surfHtml,
   ] = await Promise.all([
-    fetchJson<CapePointsResponse>(CAPE_POINTS_URL, { headers: WEATHER_HEADERS }),
-    fetchJson<HourlyForecastResponse>(CAPE_HOURLY_URL, {
+    fetchJson<CapePointsResponse>(buildPointsUrl(region), { headers: WEATHER_HEADERS }),
+    fetchJson<HourlyForecastResponse>(buildHourlyUrl(region), {
       headers: WEATHER_HEADERS,
     }),
-    fetchJson<AlertsResponse>(CAPE_ALERTS_URL, { headers: WEATHER_HEADERS }),
-    fetchJson<{ data?: Array<{ v?: string }> }>(NOAA_WATER_TEMP_URL),
+    fetchJson<AlertsResponse>(buildAlertsUrl(region), { headers: WEATHER_HEADERS }),
+    fetchJson<{ data?: Array<{ v?: string }> }>(buildWaterTempUrl(region)),
     fetchJson<{ predictions?: Array<{ t: string; v: string; type: "H" | "L" }> }>(
-      `${NOAA_TIDES_URL}${todayStamp}&end_date=${tomorrowStamp}&datum=MLLW&station=8721604&time_zone=lst_ldt&units=english&interval=hilo&format=json`,
+      buildTidesUrl(region, todayStamp, tomorrowStamp),
     ),
-    fetchText(NDBC_NEARSHORE_URL),
-    fetchText(NDBC_OFFSHORE_URL),
-    fetchText(CAPE_MARINE_URL, { headers: WEATHER_HEADERS }),
-    fetchText(CAPE_SURF_URL),
+    region.buoyNearshore ? fetchText(buildBuoyUrl(region.buoyNearshore)) : Promise.resolve(""),
+    region.buoyOffshore ? fetchText(buildBuoyUrl(region.buoyOffshore)) : Promise.resolve(""),
+    fetchText(buildMarineUrl(region), { headers: WEATHER_HEADERS }),
+    fetchText(buildSurfUrl(region)),
   ]);
 
   const tides = parseTideEvents(tidePayload);
   const hourlyForecast = parseHourlyForecast(hourlyPayload);
   const currentHour = getCurrentHour(hourlyForecast, now);
-  const nearshoreBuoy = parseBuoyReading(nearshoreText);
-  const offshoreBuoy = parseBuoyReading(offshoreText);
+  const nearshoreBuoy = nearshoreText ? parseBuoyReading(nearshoreText) : null;
+  const offshoreBuoy = offshoreText ? parseBuoyReading(offshoreText) : null;
   const surfSnapshot = parseSurfSnapshot(surfHtml);
   const marineForecast = parseMarineForecast(marineHtml);
   const sunrise = pointsPayload?.properties?.astronomicalData?.sunrise
@@ -767,7 +786,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       .filter((event): event is string => Boolean(event)) ?? [];
   const lowLight = isLowLightWindow(now, sunrise, sunset);
 
-  const spotScores = spots
+  const spotScores = regionSpots
     .map((spot) =>
       scoreSpot(
         spot,
@@ -821,24 +840,28 @@ export async function getDashboardData(): Promise<DashboardData> {
     rules: ruleCards,
     sources: [
       {
-        label: "NOAA CO-OPS Trident Pier",
-        href: "https://tidesandcurrents.noaa.gov/inventory.html?id=8721604",
+        label: `NOAA CO-OPS ${region.tideStation}`,
+        href: `https://tidesandcurrents.noaa.gov/inventory.html?id=${region.tideStation}`,
       },
-      {
-        label: "NDBC 41113 nearshore buoy",
-        href: "https://www.ndbc.noaa.gov/station_page.php?station=41113",
-      },
-      {
-        label: "NDBC 41009 offshore buoy",
-        href: "https://www.ndbc.noaa.gov/station_page.php?station=41009&tz=STN&unit=M",
-      },
+      ...(region.buoyNearshore
+        ? [{
+            label: `NDBC ${region.buoyNearshore} nearshore buoy`,
+            href: `https://www.ndbc.noaa.gov/station_page.php?station=${region.buoyNearshore}`,
+          }]
+        : []),
+      ...(region.buoyOffshore
+        ? [{
+            label: `NDBC ${region.buoyOffshore} offshore buoy`,
+            href: `https://www.ndbc.noaa.gov/station_page.php?station=${region.buoyOffshore}`,
+          }]
+        : []),
       {
         label: "NWS hourly forecast point",
-        href: CAPE_POINTS_URL,
+        href: buildPointsUrl(region),
       },
       {
         label: "NWS marine forecast",
-        href: CAPE_MARINE_URL,
+        href: buildMarineUrl(region),
       },
       {
         label: "FWC regulations hub",

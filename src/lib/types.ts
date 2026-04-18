@@ -4,7 +4,15 @@ export type SpeciesKey =
   | "whiting"
   | "black-drum"
   | "sheepshead"
-  | "redfish";
+  | "redfish"
+  | "seatrout"
+  | "tarpon"
+  | "mangrove-snapper"
+  | "jack-crevalle"
+  | "flounder"
+  | "spanish-mackerel"
+  | "cobia"
+  | "tripletail";
 
 export type TideStage = "incoming" | "outgoing" | "high" | "low" | "unknown";
 
@@ -25,7 +33,8 @@ export interface SpotDefinition {
   slug: string;
   name: string;
   area: string;
-  type: "Pier" | "Surf" | "Shoreline" | "Wild beach";
+  region: string; // region slug from regions.ts
+  type: "Pier" | "Surf" | "Shoreline" | "Wild beach" | "Inlet" | "Flats" | "Bridge";
   summary: string;
   mapPosition: { top: string; left: string };
   coordinates: { lat: number; lng: number };

@@ -201,6 +201,48 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
   background: linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.4), rgba(230, 180, 76, 0.3), transparent);
 }
 
+/* ── Region Selector ── */
+.region-selector {
+  display: flex;
+  gap: 8px;
+  padding: 4px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  position: relative;
+  z-index: 1;
+}
+.region-selector::-webkit-scrollbar { display: none; }
+
+.region-pill {
+  flex-shrink: 0;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.region-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-teal);
+  background: hsla(174, 72%, 40%, 0.1);
+}
+
+.region-pill--active {
+  color: var(--bg-base);
+  background: linear-gradient(135deg, var(--accent-teal), var(--accent-gold));
+  border-color: transparent;
+  box-shadow: 0 0 20px hsla(174, 72%, 40%, 0.3);
+}
+
 .hero__topline, .section__head, .detail-shell__topline,
 .detail-hero, .spot-card__header, .species-card__header,
 .signal-card__header, .map-layout, .rules-layout,
