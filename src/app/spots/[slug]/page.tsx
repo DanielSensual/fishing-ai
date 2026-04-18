@@ -1,0 +1,207 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import {
+  formatDashboardTimestamp,
+  getDashboardData,
+  getSpeciesByKey,
+  getSpotBySlug,
+} from "@/lib/fishing-data";
+import AnimationProvider from "../../components/AnimationProvider";
+import ScoreArc from "../../components/ScoreArc";
+import MapWrapper from "../../components/MapWrapper";
+
+export const dynamic = "force-dynamic";
+
+type SpotPageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+function ToneChip({
+  tone,
+  children,
+}: {
+  tone: "go" | "window" | "hold";
+  children: React.ReactNode;
+}) {
+  return (
+    <span className="tone-chip" data-tone={tone}>
+      {children}
+    </span>
+  );
+}
+
+export default async function SpotPage({ params }: SpotPageProps) {
+  const { slug } = await params;
+  const spot = getSpotBySlug(slug);
+
+  if (!spot) {
+    notFound();
+  }
+
+  const dashboard = await getDashboardData();
+  const spotScore = dashboard.spotScores.find(
+    (entry) => entry.spot.slug === slug
+  );
+
+  if (!spotScore) {
+    notFound();
+  }
+
+  const currentWaterTempF = dashboard.conditions.currentWaterTempF;
+  const nearshoreWaveHeightFt =
+    dashboard.conditions.nearshoreBuoy?.waveHeightFt;
+  const currentWindDirection = dashboard.conditions.currentWindDirection;
+  const currentWindSpeedMph = dashboard.conditions.currentWindSpeedMph;
+
+  const mapSpots = [
+    {
+      slug: spot.slug,
+      name: spot.name,
+      area: spot.area,
+      score: spotScore.score,
+      tone: spotScore.tone,
+      bestWindow: spotScore.bestWindow,
+      summary: spotScore.summary,
+      lat: spot.coordinates.lat,
+      lng: spot.coordinates.lng,
+    },
+  ];
+
+  return (
+    <main className="detail-shell">
+      <AnimationProvider />
+
+      <div className="detail-shell__topline">
+        <Link href="/">← Back to dashboard</Link>
+        <small>
+          Updated{" "}
+          {formatDashboardTimestamp(dashboard.conditions.generatedAt)}
+        </small>
+      </div>
+
+      <section className="detail-hero" data-animate>
+        <div>
+          <span className="eyebrow">{spot.area}</span>
+          <h1>{spot.name}</h1>
+          <p>{spot.summary}</p>
+        </div>
+        <div className="detail-hero__signal">
+          <ScoreArc score={spotScore.score} tone={spotScore.tone} size={80} />
+          <ToneChip tone={spotScore.tone}>
+            <span className="live-pulse" />
+            {spotScore.score}
+          </ToneChip>
+          <strong>{spotScore.bestWindow}</strong>
+          <small>{spotScore.summary}</small>
+        </div>
+      </section>
+
+      {/* Mini map zoomed to this spot */}
+      <section className="section" data-animate>
+        <MapWrapper
+          spots={mapSpots}
+          center={[spot.coordinates.lng, spot.coordinates.lat]}
+          zoom={14}
+        />
+      </section>
+
+      <section className="detail-grid" data-animate>
+        <article className="detail-card">
+          <span className="eyebrow">Why it scores this way</span>
+          <h2>Current read</h2>
+          <ul className="bullet-list">
+            {spotScore.reasons.map((reason) => (
+              <li key={reason}>{reason}</li>
+            ))}
+          </ul>
+        </article>
+
+        <article className="detail-card">
+          <span className="eyebrow">Access</span>
+          <h2>Before you go</h2>
+          <ul className="bullet-list">
+            {spot.access.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </article>
+
+        <article className="detail-card">
+          <span className="eyebrow">Hazards</span>
+          <h2>Trip friction</h2>
+          <ul className="bullet-list">
+            {spot.caution.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </article>
+
+        <article className="detail-card">
+          <span className="eyebrow">Hot setups</span>
+          <h2>Hooks, baits, and lanes</h2>
+          <div className="stack-list">
+            {spot.tactics.map((tactic) => (
+              <div key={tactic.title}>
+                <strong>{tactic.title}</strong>
+                <p>{tactic.detail}</p>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <article className="detail-card">
+          <span className="eyebrow">Live conditions</span>
+          <h2>What the feeds say</h2>
+          <dl className="species-card__details">
+            <div>
+              <dt>Water</dt>
+              <dd>
+                {currentWaterTempF !== null
+                  ? `${currentWaterTempF.toFixed(1)}°F`
+                  : "Unavailable"}
+              </dd>
+            </div>
+            <div>
+              <dt>Nearshore wave</dt>
+              <dd>
+                {typeof nearshoreWaveHeightFt === "number"
+                  ? `${nearshoreWaveHeightFt.toFixed(1)} ft`
+                  : "Unavailable"}
+              </dd>
+            </div>
+            <div>
+              <dt>Wind</dt>
+              <dd>
+                {currentWindDirection && currentWindSpeedMph !== null
+                  ? `${currentWindDirection} ${currentWindSpeedMph} mph`
+                  : "Unavailable"}
+              </dd>
+            </div>
+            <div>
+              <dt>Tide stage</dt>
+              <dd>{dashboard.conditions.tideStage}</dd>
+            </div>
+          </dl>
+        </article>
+
+        <article className="detail-card">
+          <span className="eyebrow">Target species</span>
+          <h2>Best fits here</h2>
+          <div className="stack-list">
+            {spot.primarySpecies.map((key) => {
+              const species = getSpeciesByKey(key);
+              return (
+                <div key={species.key}>
+                  <strong>{species.name}</strong>
+                  <p>{species.tactic}</p>
+                  <small>{species.legalNote}</small>
+                </div>
+              );
+            })}
+          </div>
+        </article>
+      </section>
+    </main>
+  );
+}
