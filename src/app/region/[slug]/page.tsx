@@ -16,7 +16,7 @@ import AnimationProvider from "../../components/AnimationProvider";
 import ScoreArc from "../../components/ScoreArc";
 import MapWrapper from "../../components/MapWrapper";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 1800;
 
 type RegionPageProps = {
   params: Promise<{ slug: string }>;

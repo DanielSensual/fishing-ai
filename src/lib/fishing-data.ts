@@ -136,7 +136,7 @@ async function fetchJson<T>(
   try {
     const response = await fetch(url, {
       ...init,
-      cache: "no-store",
+      next: { revalidate: 1800 },
       signal: AbortSignal.timeout(8000),
     });
 
@@ -154,7 +154,7 @@ async function fetchText(url: string, init?: RequestInit): Promise<string | null
   try {
     const response = await fetch(url, {
       ...init,
-      cache: "no-store",
+      next: { revalidate: 1800 },
       signal: AbortSignal.timeout(8000),
     });
 
