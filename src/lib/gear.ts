@@ -26,7 +26,7 @@ export const gearCategories = [
         category: "Spinning Reel",
         description: "Bombproof build quality for the angler who wades, kayaks, and abuses gear. Oversized Digigear drive and waterproof drag. Pair with a 7' medium-heavy rod for snook, redfish, and jacks.",
         price: "$149.99",
-        amazonUrl: "https://www.amazon.com/dp/B01C8Q999I?tag=bachataexotic-20",
+        amazonUrl: "https://www.amazon.com/s?k=Daiwa+BG+4000+Spinning+Reel&tag=bachataexotic-20",
         bestFor: ["Inshore", "Inlet fishing", "Kayak fishing"],
       },
       {
@@ -34,7 +34,7 @@ export const gearCategories = [
         category: "Spinning Combo",
         description: "Unbreakable and under $60. The GX2 has survived more dock drops, truck beds, and drunk fishing trips than any rod in history. Perfect beginner setup for seatrout, whiting, and flounder.",
         price: "$54.99",
-        amazonUrl: "https://www.amazon.com/dp/B00F0RTB0A?tag=bachataexotic-20",
+        amazonUrl: "https://www.amazon.com/s?k=Ugly+Stik+GX2+7+foot+Medium+Spinning+Combo&tag=bachataexotic-20",
         bestFor: ["Beginners", "Flats fishing", "Light inshore"],
       },
       {
@@ -42,7 +42,7 @@ export const gearCategories = [
         category: "Spinning Reel",
         description: "When the tarpon shows up and you need to not lose. Full IPX6 sealed body, 30 lbs of drag, CNC gear technology. This is your big-game inshore reel.",
         price: "$249.99",
-        amazonUrl: "https://www.amazon.com/dp/B09BLX228Q?tag=bachataexotic-20",
+        amazonUrl: "https://www.amazon.com/s?k=Penn+Slammer+IV+4500+Spinning+Reel&tag=bachataexotic-20",
         bestFor: ["Tarpon", "Cobia", "Bull redfish"],
       },
     ],
@@ -73,7 +73,7 @@ export const gearCategories = [
         category: "Artificial Bait",
         description: "When you can't find live sand fleas, these are the next best thing. Tip them on your pompano rig hooks for scent attraction. They stay on the hook better than real fleas in heavy current.",
         price: "$5.99",
-        amazonUrl: "https://www.amazon.com/dp/B001445XTE?tag=bachataexotic-20",
+        amazonUrl: "https://www.amazon.com/s?k=Fishbites+EZ+Flea+Sand+Flea+bait&tag=bachataexotic-20",
         bestFor: ["Pompano", "Whiting", "Sheepshead"],
       },
       {
@@ -104,7 +104,7 @@ export const gearCategories = [
         category: "Soft Plastic",
         description: "The most productive artificial bait in Florida inshore history. Weight-forward design gives a natural fall. Free-line it, put it under a cork, or slow-hop it on a jighead. It just works.",
         price: "$6.99",
-        amazonUrl: "https://www.amazon.com/dp/B0000AXW7O?tag=bachataexotic-20",
+        amazonUrl: "https://www.amazon.com/s?k=DOA+Shrimp+3+inch+Natural&tag=bachataexotic-20",
         bestFor: ["Seatrout", "Redfish", "Snook"],
       },
       {
@@ -143,7 +143,7 @@ export const gearCategories = [
         category: "Fillet Knife",
         description: "Non-slip grip even with bloody hands. Flexible tapered blade that follows the backbone perfectly. This is what the charter captains use. Stainless steel that actually resists saltwater corrosion.",
         price: "$34.99",
-        amazonUrl: "https://www.amazon.com/dp/B00HSF64TK?tag=bachataexotic-20",
+        amazonUrl: "https://www.amazon.com/s?k=Bubba+Blade+7+inch+Tapered+Flex+Fillet+Knife&tag=bachataexotic-20",
         bestFor: ["Fish cleaning", "All species"],
       },
       {
