@@ -1591,6 +1591,25 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   Tide + Moon Row Layout
+   ═══════════════════════════════════════════════════════════════ */
+
+.tide-moon-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0 var(--page-pad, 24px);
+}
+
+@media (max-width: 700px) {
+  .tide-moon-row {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
    Tide Chart Component
    ═══════════════════════════════════════════════════════════════ */
 

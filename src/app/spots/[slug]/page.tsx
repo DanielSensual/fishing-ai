@@ -184,7 +184,7 @@ export default async function SpotPage({ params }: SpotPageProps) {
       </section>
 
       {/* Tide Chart + Moon Phase */}
-      <section className="detail-grid" data-animate style={{ gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+      <section className="tide-moon-row" data-animate>
         <TideChart
           curve={dashboard.tideCurve.map((p) => ({ time: p.time, heightFt: p.heightFt }))}
           events={dashboard.tides.map((t) => ({
