@@ -49,7 +49,7 @@ function buildTidesUrl(r: RegionConfig, todayStamp: string, tomorrowStamp: strin
   return `${NOAA_TIDES_BASE}${todayStamp}&end_date=${tomorrowStamp}&datum=MLLW&station=${r.tideStation}&time_zone=lst_ldt&units=english&interval=hilo&format=json`;
 }
 function buildTideCurveUrl(r: RegionConfig, todayStamp: string, tomorrowStamp: string) {
-  return `${NOAA_TIDES_BASE}${todayStamp}&end_date=${tomorrowStamp}&datum=MLLW&station=${r.tideStation}&time_zone=lst_ldt&units=english&format=json`;
+  return `${NOAA_TIDES_BASE}${todayStamp}&end_date=${tomorrowStamp}&datum=MLLW&station=${r.tideStation}&time_zone=lst_ldt&units=english&interval=30&format=json`;
 }
 function buildBuoyUrl(stationId: string) {
   return `https://www.ndbc.noaa.gov/data/realtime2/${stationId}.txt`;
