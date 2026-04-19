@@ -14,6 +14,8 @@ import AnimationProvider from "../../components/AnimationProvider";
 import ScoreArc from "../../components/ScoreArc";
 import MapWrapper from "../../components/MapWrapper";
 import GearRecommendations from "../../components/GearRecommendations";
+import TideChart from "../../components/TideChart";
+import MoonPhase from "../../components/MoonPhase";
 
 export const revalidate = 1800;
 
@@ -179,6 +181,23 @@ export default async function SpotPage({ params }: SpotPageProps) {
           center={[spot.coordinates.lng, spot.coordinates.lat]}
           zoom={14}
         />
+      </section>
+
+      {/* Tide Chart + Moon Phase */}
+      <section className="detail-grid" data-animate style={{ gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+        <TideChart
+          curve={dashboard.tideCurve.map((p) => ({ time: p.time, heightFt: p.heightFt }))}
+          events={dashboard.tides.map((t) => ({
+            time: t.time.toISOString(),
+            heightFt: t.heightFt,
+            type: t.type,
+            label: t.localTimeLabel,
+          }))}
+          now={new Date().toISOString()}
+          sunrise={dashboard.conditions.sunrise?.toISOString()}
+          sunset={dashboard.conditions.sunset?.toISOString()}
+        />
+        <MoonPhase />
       </section>
 
       <section className="detail-grid" data-animate>

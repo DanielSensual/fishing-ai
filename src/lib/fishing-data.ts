@@ -48,6 +48,9 @@ const NOAA_TIDES_BASE =
 function buildTidesUrl(r: RegionConfig, todayStamp: string, tomorrowStamp: string) {
   return `${NOAA_TIDES_BASE}${todayStamp}&end_date=${tomorrowStamp}&datum=MLLW&station=${r.tideStation}&time_zone=lst_ldt&units=english&interval=hilo&format=json`;
 }
+function buildTideCurveUrl(r: RegionConfig, todayStamp: string, tomorrowStamp: string) {
+  return `${NOAA_TIDES_BASE}${todayStamp}&end_date=${tomorrowStamp}&datum=MLLW&station=${r.tideStation}&time_zone=lst_ldt&units=english&format=json`;
+}
 function buildBuoyUrl(stationId: string) {
   return `https://www.ndbc.noaa.gov/data/realtime2/${stationId}.txt`;
 }
@@ -230,6 +233,25 @@ function parseHourlyForecast(
       shortForecast: period.shortForecast,
       isDaytime: period.isDaytime,
       precipitationChance: period.probabilityOfPrecipitation?.value ?? 0,
+    })) ?? []
+  );
+}
+
+interface TideCurvePoint {
+  time: string;
+  heightFt: number;
+}
+
+function parseTideCurve(
+  payload: {
+    predictions?: Array<{ t: string; v: string }>;
+  } | null,
+): TideCurvePoint[] {
+  const offset = getEasternOffsetSuffix();
+  return (
+    payload?.predictions?.map((p) => ({
+      time: new Date(`${p.t.replace(" ", "T")}${offset}`).toISOString(),
+      heightFt: Number(p.v),
     })) ?? []
   );
 }
@@ -744,11 +766,12 @@ export async function getDashboardData(regionSlug?: string): Promise<DashboardDa
     alertsPayload,
     waterTempPayload,
     tidePayload,
+    tideCurvePayload,
     nearshoreText,
     offshoreText,
     marineHtml,
     surfHtml,
-  ] = await Promise.all([
+  ] = await Promise.all<unknown>([
     fetchJson<CapePointsResponse>(buildPointsUrl(region), { headers: WEATHER_HEADERS }),
     fetchJson<HourlyForecastResponse>(buildHourlyUrl(region), {
       headers: WEATHER_HEADERS,
@@ -758,30 +781,36 @@ export async function getDashboardData(regionSlug?: string): Promise<DashboardDa
     fetchJson<{ predictions?: Array<{ t: string; v: string; type: "H" | "L" }> }>(
       buildTidesUrl(region, todayStamp, tomorrowStamp),
     ),
+    fetchJson<{ predictions?: Array<{ t: string; v: string }> }>(
+      buildTideCurveUrl(region, todayStamp, tomorrowStamp),
+    ),
     region.buoyNearshore ? fetchText(buildBuoyUrl(region.buoyNearshore)) : Promise.resolve(""),
     region.buoyOffshore ? fetchText(buildBuoyUrl(region.buoyOffshore)) : Promise.resolve(""),
     fetchText(buildMarineUrl(region), { headers: WEATHER_HEADERS }),
     fetchText(buildSurfUrl(region)),
   ]);
 
-  const tides = parseTideEvents(tidePayload);
-  const hourlyForecast = parseHourlyForecast(hourlyPayload);
+  const tides = parseTideEvents(tidePayload as { predictions?: Array<{ t: string; v: string; type: "H" | "L" }> } | null);
+  const tideCurve = parseTideCurve(tideCurvePayload as { predictions?: Array<{ t: string; v: string }> } | null);
+  const hourlyForecast = parseHourlyForecast(hourlyPayload as HourlyForecastResponse | null);
   const currentHour = getCurrentHour(hourlyForecast, now);
-  const nearshoreBuoy = nearshoreText ? parseBuoyReading(nearshoreText) : null;
-  const offshoreBuoy = offshoreText ? parseBuoyReading(offshoreText) : null;
-  const surfSnapshot = parseSurfSnapshot(surfHtml);
-  const marineForecast = parseMarineForecast(marineHtml);
-  const sunrise = pointsPayload?.properties?.astronomicalData?.sunrise
-    ? new Date(pointsPayload.properties.astronomicalData.sunrise)
+  const nearshoreBuoy = (nearshoreText as string) ? parseBuoyReading(nearshoreText as string) : null;
+  const offshoreBuoy = (offshoreText as string) ? parseBuoyReading(offshoreText as string) : null;
+  const surfSnapshot = parseSurfSnapshot(surfHtml as string | null);
+  const marineForecast = parseMarineForecast(marineHtml as string | null);
+  const ppPayload = pointsPayload as CapePointsResponse | null;
+  const sunrise = ppPayload?.properties?.astronomicalData?.sunrise
+    ? new Date(ppPayload.properties.astronomicalData.sunrise)
     : null;
-  const sunset = pointsPayload?.properties?.astronomicalData?.sunset
-    ? new Date(pointsPayload.properties.astronomicalData.sunset)
+  const sunset = ppPayload?.properties?.astronomicalData?.sunset
+    ? new Date(ppPayload.properties.astronomicalData.sunset)
     : null;
   const { tideStage, nextTide } = getTideStage(tides, now);
   const currentWaterTempF =
-    parseWaterTemperature(waterTempPayload) ?? nearshoreBuoy?.waterTempF ?? null;
+    parseWaterTemperature(waterTempPayload as { data?: Array<{ v?: string }> } | null) ?? nearshoreBuoy?.waterTempF ?? null;
+  const alertsData = alertsPayload as AlertsResponse | null;
   const activeAlerts =
-    alertsPayload?.features
+    alertsData?.features
       ?.map((feature) => feature.properties?.event)
       .filter((event): event is string => Boolean(event)) ?? [];
   const lowLight = isLowLightWindow(now, sunrise, sunset);
@@ -835,6 +864,7 @@ export async function getDashboardData(regionSlug?: string): Promise<DashboardDa
       activeAlerts,
     },
     tides,
+    tideCurve,
     spotScores,
     speciesOutlook,
     rules: ruleCards,

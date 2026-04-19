@@ -1589,3 +1589,175 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
     gap: 0.5rem;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Tide Chart Component
+   ═══════════════════════════════════════════════════════════════ */
+
+.tide-chart {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 1rem);
+  padding: 1.25rem 1.5rem 1rem;
+  backdrop-filter: blur(16px);
+}
+
+.tide-chart--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  color: var(--ink-muted);
+}
+
+.tide-chart__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.tide-chart__legend {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.7rem;
+  color: var(--ink-muted);
+}
+
+.tide-chart__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.tide-chart__legend-item--high {
+  color: hsl(190, 80%, 70%);
+}
+
+.tide-chart__legend-item--low {
+  color: hsl(220, 60%, 65%);
+}
+
+.tide-chart__legend-item--now {
+  color: hsl(350, 80%, 65%);
+}
+
+.tide-chart__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Moon Phase + Solunar Component
+   ═══════════════════════════════════════════════════════════════ */
+
+.moon-phase {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 1rem);
+  padding: 1.25rem 1.5rem;
+  backdrop-filter: blur(16px);
+}
+
+.moon-phase__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.moon-phase__emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.moon-phase__name {
+  display: block;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.moon-phase__illumination {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+
+.moon-phase__fishing-rating {
+  margin-left: auto;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.moon-phase__fishing-rating[data-rating="excellent"] {
+  color: var(--tone-go, hsl(160, 65%, 50%));
+}
+
+.moon-phase__fishing-rating[data-rating="good"] {
+  color: hsl(190, 70%, 55%);
+}
+
+.moon-phase__fishing-rating[data-rating="average"] {
+  color: var(--gold);
+}
+
+.moon-phase__fishing-rating[data-rating="fair"] {
+  color: var(--ink-muted);
+}
+
+.moon-phase__stars {
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: var(--gold);
+}
+
+.moon-phase__detail {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+}
+
+.moon-phase__solunar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.moon-phase__solunar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.moon-phase__window {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.moon-phase__window--major {
+  background: hsla(160, 60%, 45%, 0.15);
+  border: 1px solid hsla(160, 60%, 45%, 0.3);
+  color: hsl(160, 65%, 60%);
+}
+
+.moon-phase__window--minor {
+  background: hsla(220, 50%, 50%, 0.12);
+  border: 1px solid hsla(220, 50%, 50%, 0.25);
+  color: hsl(220, 50%, 65%);
+}
+
+@media (max-width: 700px) {
+  .tide-chart {
+    padding: 1rem;
+  }
+
+  .moon-phase__solunar {
+    grid-template-columns: 1fr;
+  }
+}

@@ -156,6 +156,11 @@ export interface SourceLink {
   href: string;
 }
 
+export interface TideCurvePoint {
+  time: string;
+  heightFt: number;
+}
+
 export interface DashboardData {
   overview: {
     headline: string;
@@ -165,6 +170,7 @@ export interface DashboardData {
   };
   conditions: LiveConditions;
   tides: TideEvent[];
+  tideCurve: TideCurvePoint[];
   spotScores: SpotScore[];
   speciesOutlook: SpeciesOutlook[];
   rules: RuleCard[];
