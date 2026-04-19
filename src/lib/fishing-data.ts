@@ -139,7 +139,7 @@ async function fetchJson<T>(
   try {
     const response = await fetch(url, {
       ...init,
-      next: { revalidate: 1800 },
+      next: { revalidate: 0 },
       signal: AbortSignal.timeout(8000),
     });
 
@@ -157,7 +157,7 @@ async function fetchText(url: string, init?: RequestInit): Promise<string | null
   try {
     const response = await fetch(url, {
       ...init,
-      next: { revalidate: 1800 },
+      next: { revalidate: 0 },
       signal: AbortSignal.timeout(8000),
     });
 

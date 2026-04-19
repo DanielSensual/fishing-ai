@@ -16,7 +16,7 @@ import AnimationProvider from "../../components/AnimationProvider";
 import ScoreArc from "../../components/ScoreArc";
 import MapWrapper from "../../components/MapWrapper";
 
-export const revalidate = 1800;
+export const revalidate = 0; // MASTER: real-time, no cache
 
 type RegionPageProps = {
   params: Promise<{ slug: string }>;

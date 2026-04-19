@@ -13,7 +13,7 @@ import AnimationProvider from "./components/AnimationProvider";
 import ScoreArc from "./components/ScoreArc";
 import MapWrapper from "./components/MapWrapper";
 
-export const revalidate = 1800;
+export const revalidate = 0; // MASTER: real-time, no cache
 
 function ToneChip({
   tone,
@@ -82,7 +82,10 @@ export default async function Home() {
       <section className="hero">
         <div className="hero__topline">
           <div>
-            <span className="eyebrow">Florida fishing command deck</span>
+            <span className="eyebrow" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              Daniel&apos;s Command Deck
+              <span style={{ background: 'linear-gradient(135deg, #f43f5e, #e11d48)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.08em', color: '#fff' }}>LIVE</span>
+            </span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <Image src="/logo.png" alt="Bite Atlas" width={48} height={48} style={{ borderRadius: '12px' }} priority />
               <h1>Bite Atlas</h1>

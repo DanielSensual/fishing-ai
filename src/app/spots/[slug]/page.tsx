@@ -17,7 +17,7 @@ import GearRecommendations from "../../components/GearRecommendations";
 import TideChart from "../../components/TideChart";
 import MoonPhase from "../../components/MoonPhase";
 
-export const revalidate = 1800;
+export const revalidate = 0; // MASTER: real-time, no cache
 
 type SpotPageProps = {
   params: Promise<{ slug: string }>;
