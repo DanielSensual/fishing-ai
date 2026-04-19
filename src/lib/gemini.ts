@@ -58,7 +58,7 @@ OVERVIEW: ${dashboard.overview.headline} — ${dashboard.overview.summary}
 `.trim();
 }
 
-const SYSTEM_PROMPT = `You are "Captain" — an AI fishing advisor built into the Fishing AI command deck for Cape Canaveral, Florida.
+const SYSTEM_PROMPT = `You are "Captain" — an AI fishing advisor built into the Bite Atlas command deck for Cape Canaveral, Florida.
 
 Your personality:
 - Direct, concise, confident — like a fishing guide who has fished the Space Coast for 20 years

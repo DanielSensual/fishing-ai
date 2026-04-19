@@ -83,7 +83,7 @@ export default async function Home() {
         <div className="hero__topline">
           <div>
             <span className="eyebrow">Florida fishing command deck</span>
-            <h1>Fishing AI</h1>
+            <h1>Bite Atlas</h1>
           </div>
           <nav className="hero__nav" aria-label="Primary">
             <a href="#map">Map</a>
