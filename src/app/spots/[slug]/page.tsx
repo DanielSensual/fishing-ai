@@ -13,6 +13,7 @@ import { getRegionBySlug } from "@/lib/regions";
 import AnimationProvider from "../../components/AnimationProvider";
 import ScoreArc from "../../components/ScoreArc";
 import MapWrapper from "../../components/MapWrapper";
+import GearRecommendations from "../../components/GearRecommendations";
 
 export const revalidate = 1800;
 
@@ -233,6 +234,9 @@ export default async function SpotPage({ params }: SpotPageProps) {
             ))}
           </div>
         </article>
+
+        {/* Affiliate Gear Injection */}
+        <GearRecommendations keywords={[spot.type, ...spot.primarySpecies]} limit={2} />
 
         <article className="detail-card">
           <span className="eyebrow">Live conditions</span>

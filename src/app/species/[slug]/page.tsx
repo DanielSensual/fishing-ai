@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { speciesCatalog, spots } from "@/lib/spots";
+import { speciesList } from "@/lib/spots";
 import { getRegionBySlug } from "@/lib/regions";
 import type { SpeciesKey } from "@/lib/types";
 import AnimationProvider from "../../components/AnimationProvider";
+import GearRecommendations from "../../components/GearRecommendations";
 
 type SpeciesPageProps = {
   params: Promise<{ slug: string }>;
@@ -190,26 +192,26 @@ export default async function SpeciesDetailPage({ params }: SpeciesPageProps) {
           </div>
         </article>
 
-        {/* Where to find them */}
-        <article className="detail-card">
-          <span className="eyebrow">Where to fish</span>
-          <h2>{spotsWithSpecies.length} spots across Florida</h2>
-          <div className="stack-list">
-            {Array.from(spotsByRegion.entries()).map(([regionName, regionSpots]) => (
-              <div key={regionName}>
-                <strong style={{ color: species.accent }}>{regionName}</strong>
-                <ul className="bullet-list" style={{ marginTop: "0.5rem" }}>
-                  {regionSpots.map((spot) => (
-                    <li key={spot.slug}>
-                      <Link href={`/spots/${spot.slug}`} style={{ color: "var(--c-teal)" }}>
-                        {spot.name}
-                      </Link>
-                      <span style={{ opacity: 0.6 }}> — {spot.type} · {spot.area}</span>
-                    </li>
+        {/* Regional spots card */}
+        <article className="detail-card detail-card--col2">
+          <span className="eyebrow">Where to find them</span>
+          <h2>Top spots by region</h2>
+          <div className="species-card__spots">
+            {Array.from(spotsByRegion.entries()).map(([region, regionSpots]) => (
+              <div key={region} className="species-card__region">
+                <h3>{region}</h3>
+                <div className="species-card__tags">
+                  {regionSpots.map((s) => (
+                    <Link key={s.slug} href={`/spots/${s.slug}`} className="spot-tag">
+                      {s.name}
+                    </Link>
                   ))}
-                </ul>
+                </div>
               </div>
             ))}
+            {spotsWithSpecies.length === 0 && (
+              <p style={{ opacity: 0.6 }}>No prime spots mapped currently.</p>
+            )}
           </div>
         </article>
 
@@ -233,6 +235,11 @@ export default async function SpeciesDetailPage({ params }: SpeciesPageProps) {
             </div>
           </article>
         )}
+      </section>
+
+      {/* Affiliate Gear Injection */}
+      <section className="detail-grid" style={{ marginTop: "1rem", paddingBottom: "4rem" }} data-animate>
+        <GearRecommendations keywords={[species.name, species.shortLabel]} limit={2} />
       </section>
     </main>
   );
