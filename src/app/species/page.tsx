@@ -3,7 +3,6 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 import { speciesCatalog } from "@/lib/spots";
-import type { SpeciesKey } from "@/lib/types";
 import AnimationProvider from "../components/AnimationProvider";
 
 export const metadata: Metadata = {

@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { speciesCatalog, spots } from "@/lib/spots";
-import { speciesList } from "@/lib/spots";
 import { getRegionBySlug } from "@/lib/regions";
 import type { SpeciesKey } from "@/lib/types";
 import AnimationProvider from "../../components/AnimationProvider";

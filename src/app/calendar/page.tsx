@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 
 import { seasonalCalendar, getCurrentMonthFishing } from "@/lib/seasonal-calendar";
 import { speciesCatalog } from "@/lib/spots";
-import type { SpeciesKey } from "@/lib/types";
 import AnimationProvider from "../components/AnimationProvider";
 
 export const metadata: Metadata = {
