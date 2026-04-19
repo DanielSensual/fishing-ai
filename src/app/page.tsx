@@ -83,7 +83,10 @@ export default async function Home() {
         <div className="hero__topline">
           <div>
             <span className="eyebrow">Florida fishing command deck</span>
-            <h1>Bite Atlas</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Image src="/logo.png" alt="Bite Atlas" width={48} height={48} style={{ borderRadius: '12px' }} priority />
+              <h1>Bite Atlas</h1>
+            </div>
           </div>
           <nav className="hero__nav" aria-label="Primary">
             <a href="#map">Map</a>
