@@ -2,14 +2,14 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.ghostaisystems.fishingai',
-  appName: 'Fishing AI',
+  appName: 'Bite Atlas',
   webDir: 'out',
   server: {
     url: 'https://fishing-ai-nine.vercel.app',
     cleartext: false,
   },
   ios: {
-    scheme: 'Fishing AI',
+    scheme: 'Bite Atlas',
     contentInset: 'automatic',
     backgroundColor: '#060d18',
     preferredContentMode: 'mobile',
