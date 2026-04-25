@@ -76,9 +76,11 @@ function ConditionStat({
 function spotImageExists(slug: string): boolean {
   const knownImages = [
     "jetty-park-pier", "cocoa-beach-surf", "port-canaveral-channel-edge", "playalinda-north-beaches",
-    "sebastian-inlet", "mosquito-lagoon", "skyway-fishing-pier",
-    "ponce-inlet-jetty", "jupiter-inlet", "fort-de-soto-park",
-    "mayport-jetties", "jacksonville-beach-pier", "fort-pierce-inlet",
+    "sebastian-inlet", "mosquito-lagoon", "indian-river-melbourne",
+    "ponce-inlet-jetty", "new-smyrna-beach-surf", "daytona-beach-pier",
+    "skyway-fishing-pier", "fort-de-soto-park", "gandy-bridge",
+    "fort-pierce-inlet", "jupiter-inlet", "lake-worth-pier",
+    "jacksonville-beach-pier", "mayport-jetties",
   ];
   return knownImages.includes(slug);
 }
@@ -285,7 +287,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
         </div>
 
         <div className="map-layout">
-          <MapWrapper spots={mapSpots} center={[region.center.lng, region.center.lat]} zoom={region.zoom} />
+          <MapWrapper key={slug} spots={mapSpots} center={[region.center.lng, region.center.lat]} zoom={region.zoom} />
 
           <aside className="map-sidebar">
             <h3>Live notes</h3>
