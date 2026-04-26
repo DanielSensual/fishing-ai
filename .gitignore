@@ -42,3 +42,4 @@ next-env.d.ts
 ios/App/Pods
 ios/App/App/public
 .env.local
+.env*.local
