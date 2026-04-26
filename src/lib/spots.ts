@@ -17,7 +17,7 @@ export const speciesCatalog: Record<SpeciesKey, SpeciesDefinition> = {
     tactic:
       "Fish edges, current seams, and low-light bait movement instead of blind fan casting.",
     legalNote:
-      "East coast harvest is seasonal and permit-based; on April 17, 2026 the east coast harvest window is open.",
+      "Snook harvest is coast- and region-specific; check FWC before keeping fish and carry a snook permit if harvesting.",
     idealWaterTempRangeF: [70, 82],
   },
   pompano: {
@@ -87,7 +87,7 @@ export const speciesCatalog: Record<SpeciesKey, SpeciesDefinition> = {
     tactic:
       "Treat the channel edges as ambush lanes and fish moving current, not dead water.",
     legalNote:
-      "Indian River Lagoon redfish are catch-and-release only, so this is a confidence signal more than a cooler plan.",
+      "Redfish rules are region-specific in Florida. Check the current FWC zone before keeping fish.",
     idealWaterTempRangeF: [62, 82],
   },
   seatrout: {
@@ -1069,7 +1069,316 @@ export const spots: SpotDefinition[] = [
   },
 
   // ═══════════════════════════════════════════════════════════
-  //  REGION 5: Treasure Coast & Palm Beach
+  //  REGION 5: Anna Maria & Sarasota
+  // ═══════════════════════════════════════════════════════════
+  {
+    slug: "keyes-marina-bimini-bay",
+    name: "Keyes Marina / Bimini Bay",
+    area: "Holmes Beach",
+    region: "anna-maria-sarasota",
+    type: "Shoreline",
+    summary:
+      "Protected AMI backwater with marina docks, Bimini Bay shade lines, nearby grass, and mangrove edges. This is the finesse inshore play when clear water and an incoming tide pull snook and redfish off the channels and onto the shallow edges.",
+    mapPosition: { top: "47%", left: "45%" },
+    coordinates: { lat: 27.5021, lng: -82.7122 },
+    access: [
+      "Best fished by skiff, kayak, or from clearly legal public access around the marina basin and bay edges.",
+      "Island Discount Tackle is at Keyes Marina, 5503 Marina Dr, and is the first stop for live shrimp, shiners, leader, ice, and local color.",
+      "Florida saltwater fishing license required unless you are on a properly licensed charter or exempt.",
+      "Respect private docks inside Bimini Bay. Fish public water and do not step onto private platforms, lifts, or seawalls.",
+      "Perico Island grass flats are a short move east when the marina docks get too bright or crowded.",
+    ],
+    caution: [
+      "Clear AMI water makes fish leader-shy. Heavy leader and hardware will cost bites.",
+      "Boat traffic, dock lines, lifts, and barnacles punish loose drag settings.",
+      "Skip-casting under docks creates conflict fast. Give residents and moored boats room.",
+      "Manatee zones and idle-speed areas are common around the canals and marina approaches.",
+      "Stingrays and oyster edges are real on the nearby flats. Shuffle and wear proper footwear.",
+    ],
+    highlights: [
+      "Incoming tide pulls snook and redfish from the deeper cuts toward mangroves, docks, and grass edges.",
+      "Bimini Bay shade lines can hold oversized snook once the sun gets high.",
+      "Select shrimp, shiners, or pilchards outfish noisy lures when visibility is 6-8 feet.",
+      "Nervous water, mullet wakes, and small bait flipping are better tells than blind casting.",
+      "Good fallback when Gulf beaches are too bright, crowded, or wind-exposed.",
+    ],
+    tactics: [
+      {
+        title: "Snook — dock skip",
+        detail:
+          "Skip a live shiner, pilchard, or select shrimp as far under the dock shade as you can reach. Use a #1 or 1/0 circle hook, 20 lb fluorocarbon leader, and no extra weight unless current forces it. Let the bait swim naturally and keep the rod low so the first run does not saw you off.",
+      },
+      {
+        title: "Redfish — mangrove edge",
+        detail:
+          "On the top half of the incoming tide, pitch a live shrimp or small gold spoon within a foot of the mangrove roots. Reds nose into the shade looking for shrimp and crabs. If you miss the root line by several feet, reel in and recast instead of dragging dead water.",
+      },
+      {
+        title: "Trout — Perico grass potholes",
+        detail:
+          "Slide to the Perico grass when the docks slow down. Work a live shrimp under a popping cork or a 3-inch natural paddletail across white sand potholes in 2-4 feet. Let the bait pause over the light sand; the eat usually happens on the stall.",
+      },
+      {
+        title: "Snapper — stealth chum",
+        detail:
+          "Small mangrove snapper hold tight to dock posts and riprap. Free-line a tiny shrimp piece or pilchard chunk on 10-15 lb fluorocarbon after tossing a few thumbnail-sized chum pieces upcurrent. Light line beats heavy sinkers here.",
+      },
+    ],
+    primarySpecies: ["snook", "redfish", "seatrout", "mangrove-snapper"],
+    preferredTides: ["incoming", "high"],
+    preferredWindDirections: ["E", "SE", "NE"],
+    avoidWindDirections: ["W", "NW"],
+    idealWaveRangeFt: [0, 1.5],
+    idealWaterTempRangeF: [68, 84],
+    lightPreference: "low-light",
+  },
+  {
+    slug: "rod-and-reel-pier",
+    name: "Rod & Reel Pier",
+    area: "Anna Maria North End",
+    region: "anna-maria-sarasota",
+    type: "Pier",
+    summary:
+      "Classic north-end AMI pier structure with mackerel lanes, snapper shade, and snook cruising the pilings. It is a compact, high-percentage stop when bait is visible and the tide is still moving.",
+    mapPosition: { top: "20%", left: "55%" },
+    coordinates: { lat: 27.5356, lng: -82.7335 },
+    access: [
+      "Confirm current pier access and fishing rules before you commit; hours and access can change after storms or repairs.",
+      "Carry a Florida saltwater fishing license unless current posted pier rules clearly say the operator license covers anglers.",
+      "Parking is limited on the north end. Arrive early and keep gear compact.",
+      "Use the pier edge, shadow line, and downcurrent corners instead of blocking walkways or restaurant access.",
+      "Bring pliers, a dehooker, and a small hoop net if you plan to lift fish from the deck.",
+    ],
+    caution: [
+      "Spanish mackerel cut light leader instantly. Add short wire or heavier bite tippet only when they are the target.",
+      "Pelicans and gulls track live shrimp and shiny plugs. Pause casts when birds are low over the lane.",
+      "Weekend crowding compresses casting lanes. Fast horizontal retrieves are not safe when people are crossing behind you.",
+      "Snook hooked beside the pilings turn sideways fast. Do not bring ultralight tackle to a structure fight.",
+      "Storm damage and repairs can change access. Check local status before making this the only plan.",
+    ],
+    highlights: [
+      "Fast silver spoons and Got-Cha plugs produce Spanish mackerel when bait is flipping near the pier.",
+      "Small live shrimp under a popping cork is the backup when mackerel ignore metal.",
+      "Mangrove snapper and sheepshead hold tight to shaded pilings and barnacle growth.",
+      "Early tarpon of the season can ghost past the pier and north-end lanes on warm April mornings.",
+      "Low-light snook use the pier shadow and shallow edge before boat traffic builds.",
+    ],
+    tactics: [
+      {
+        title: "Spanish mackerel — speed retrieve",
+        detail:
+          "Throw a 3/4-1 oz silver spoon or Got-Cha plug parallel to the bait lane and retrieve fast. If you think you are burning it too quickly, speed up. Mackerel feed in short windows, so cast back immediately after a strike or follow.",
+      },
+      {
+        title: "Snapper — piling finesse",
+        detail:
+          "Use a small live shrimp or shrimp piece on a No. 2 hook with 10-15 lb fluorocarbon. Fish it with minimal weight so it drifts naturally beside the pilings. Chum with tiny pieces, not handfuls, or the fish will eat the free food and ignore the hook.",
+      },
+      {
+        title: "Snook — shadow-line drift",
+        detail:
+          "Free-line a pilchard, shiner, or select shrimp along the shaded side of the pier on moving water. Cast upcurrent and let the bait sweep naturally into the shadow. Close the bail early because the first pull is straight back to the pilings.",
+      },
+      {
+        title: "Tarpon — observe first",
+        detail:
+          "If large shadows roll through, stop blind casting and watch direction. Pitch a live crab, pinfish, or large threadfin ahead of the travel lane on heavy leader. Most pier tarpon shots are one-cast opportunities.",
+      },
+    ],
+    primarySpecies: ["spanish-mackerel", "mangrove-snapper", "snook", "tarpon", "sheepshead"],
+    preferredTides: ["incoming", "high"],
+    preferredWindDirections: ["E", "SE", "S"],
+    avoidWindDirections: ["W", "NW"],
+    idealWaveRangeFt: [0, 2],
+    idealWaterTempRangeF: [68, 84],
+    lightPreference: "any",
+  },
+  {
+    slug: "bean-point-current-seams",
+    name: "Bean Point Current Seams",
+    area: "Anna Maria North End",
+    region: "anna-maria-sarasota",
+    type: "Inlet",
+    summary:
+      "The north tip of Anna Maria where Gulf water, Tampa Bay flow, beach troughs, and sandbar edges collide. Fish it like a small pass: seams first, then troughs, then the quiet edge once the current peaks.",
+    mapPosition: { top: "13%", left: "45%" },
+    coordinates: { lat: 27.5432, lng: -82.7443 },
+    access: [
+      "Walk-in beach access only, with limited neighborhood parking. Arrive early and keep the footprint light.",
+      "No bait shop or facilities at the point. Bring water, pliers, leader, and sun protection.",
+      "Florida saltwater fishing license required for shore fishing unless exempt.",
+      "Fish outside guarded swimming areas and follow posted beach rules, nesting closures, and local signage.",
+      "Polarized amber or brown lenses matter here because the best casts are to visible troughs, seams, and bait schools.",
+    ],
+    caution: [
+      "This is high-current water. Do not wade deep around the tip or on a hard tide swing.",
+      "Boat traffic cuts close to the channel edge. Stay visible and do not cast into navigation lanes.",
+      "Sandbars and drop-offs shift after storms. Test every step before committing weight.",
+      "Afternoon sea breeze can turn a clean Gulf side into crossed chop quickly.",
+      "Long walks back in heat are part of the trip. Pack lighter than you would for a pier session.",
+    ],
+    highlights: [
+      "Incoming tide before the high turn creates clean current seams for snook, trout, jacks, and mackerel.",
+      "Gold spoons and natural paddletails cover water without spooking fish in clear water.",
+      "Big seatrout sit in potholes and sandy depressions near the grass and trough edges.",
+      "Snook cruise parallel to the beach, often inside where most anglers cast over them.",
+      "Tarpon and large rays can slide the outer bar during late spring and early summer warmups.",
+    ],
+    tactics: [
+      {
+        title: "Current seam — gold spoon",
+        detail:
+          "Cast a 1/4 oz gold spoon across the seam and retrieve just fast enough to keep it wobbling above the grass. Start on the inside seam before throwing long. Snook, trout, and jacks often sit on the softer edge, not the ripping center.",
+      },
+      {
+        title: "Snook — beach parallel",
+        detail:
+          "Walk quietly and cast a white or natural paddletail parallel to shore in the first trough. Keep the lure inside the drop, especially at first light. Most beach snook are within a rod-length or two of the sand.",
+      },
+      {
+        title: "Gator trout — pothole pause",
+        detail:
+          "Work a 3-inch shrimp imitation or paddletail over sandy potholes. Let it fall into the light spot, twitch twice, and pause. Larger trout use those depressions as ambush bowls when the tide starts easing off.",
+      },
+      {
+        title: "Tarpon — moving shadow shot",
+        detail:
+          "If tarpon show on the outside bar, stop casting at smaller fish. Position ahead of the travel direction and lead the fish with a live crab, threadfin, or soft-plastic eel profile on heavy leader. Do not drop the bait on their heads.",
+      },
+    ],
+    primarySpecies: ["snook", "seatrout", "tarpon", "spanish-mackerel", "jack-crevalle"],
+    preferredTides: ["incoming", "outgoing"],
+    preferredWindDirections: ["E", "SE", "S"],
+    avoidWindDirections: ["W", "NW"],
+    idealWaveRangeFt: [0, 2],
+    idealWaterTempRangeF: [68, 84],
+    lightPreference: "low-light",
+  },
+  {
+    slug: "longboat-pass-bridge",
+    name: "Longboat Pass Bridge",
+    area: "Bradenton Beach / Longboat Key",
+    region: "anna-maria-sarasota",
+    type: "Bridge",
+    summary:
+      "High-current bridge and pass structure at the south end of AMI. Pilings, rocks, a deep hole, and a hard tide exchange make this the move when the flats go slack or the bite shifts to flow.",
+    mapPosition: { top: "74%", left: "53%" },
+    coordinates: { lat: 27.4435, lng: -82.6896 },
+    access: [
+      "Use legal shoreline, bridge, and park access around Longboat Pass and Coquina Beach. Watch posted bridge restrictions.",
+      "Coquina Beach parking and facilities make this easier to stage than the north-end walk-in spots.",
+      "Florida saltwater fishing license required unless you are fishing from a covered licensed pier or exempt.",
+      "Bring heavier leader, extra jigs, and a landing plan before fishing close to the rocks.",
+      "This is a strong backup during the slack/turn window because pass water keeps moving longer than flats water.",
+    ],
+    caution: [
+      "Current around the bridge can be too fast for light jigheads. Scale weight to bottom contact, not habit.",
+      "Rocks, barnacles, and piling bases break fish off fast. Retie after every rub.",
+      "Boat traffic is constant through the pass. Keep casts out of the channel and watch your backswing.",
+      "Oversized snook and tarpon need room. Do not fish locked drag from the rocks.",
+      "Bridge access and construction restrictions change. Posted signs win over app notes.",
+    ],
+    highlights: [
+      "Bridge shade and current breaks hold snook when the sun gets high.",
+      "The south-side pilings and nearby hole are prime for weighted shrimp, bucktails, and live pinfish.",
+      "Mangrove snapper and sheepshead use the rocks and piling bases as year-round structure.",
+      "Spanish mackerel push bait through the pass when the Gulf side is clean and flat.",
+      "Early-season tarpon can slide the pass on warm moving-water windows.",
+    ],
+    tactics: [
+      {
+        title: "Bridge pilings — weighted shrimp",
+        detail:
+          "Rig a live shrimp on a 1/4-1/2 oz jighead or knocker rig and drift it tight to the downcurrent side of the piling. Keep contact without anchoring the bait in one place. Snook and snapper sit where the current softens.",
+      },
+      {
+        title: "Bucktail — pass sweep",
+        detail:
+          "Throw a 1/2 oz white bucktail upcurrent and let it sweep along the bridge shadow. Lift just enough to keep it above the rocks. This is a clean way to cover mackerel, snook, jacks, and snapper without soaking bait.",
+      },
+      {
+        title: "Deep hole — live pinfish",
+        detail:
+          "Drop a live pinfish or large shrimp to the bottom near the deeper hole off the rocks with enough weight to hold. Use 30-40 lb leader and a circle hook. Give big fish time to turn before you lift.",
+      },
+      {
+        title: "Snapper — chum the eddy",
+        detail:
+          "Set up on the soft side of the current and feed small pieces of shrimp or sardine. Drift a tiny bait back naturally on light fluorocarbon. If the bait spins, you are using too much weight.",
+      },
+    ],
+    primarySpecies: ["snook", "mangrove-snapper", "spanish-mackerel", "tarpon", "sheepshead"],
+    preferredTides: ["incoming", "outgoing", "high"],
+    preferredWindDirections: ["E", "SE", "NE"],
+    avoidWindDirections: ["W", "SW"],
+    idealWaveRangeFt: [0, 2.5],
+    idealWaterTempRangeF: [68, 84],
+    lightPreference: "any",
+  },
+  {
+    slug: "coquina-ami-beach-troughs",
+    name: "Coquina & AMI Beach Troughs",
+    area: "Bradenton Beach / Holmes Beach",
+    region: "anna-maria-sarasota",
+    type: "Surf",
+    summary:
+      "Walkable Gulf beach program for pompano, whiting, cruising snook, and mackerel when southeast wind lays the surf down. The target is the trough between dry sand and the first bar, not the horizon.",
+    mapPosition: { top: "68%", left: "43%" },
+    coordinates: { lat: 27.4529, lng: -82.6927 },
+    access: [
+      "Coquina Beach offers public parking, restrooms, and a long walkable shoreline.",
+      "Anna Maria Public Beach and Manatee Beach are useful north-side alternatives when the trough looks cleaner there.",
+      "Fish outside posted swimming zones and move when beach traffic builds.",
+      "Florida saltwater fishing license required for shore fishing unless exempt.",
+      "Bring a small shoulder bag, bait cooler, and sand spike so you can walk until you find the deeper lane.",
+    ],
+    caution: [
+      "Do not cast near swimmers, shorebirds, or turtle nesting areas. Move instead of forcing a bad lane.",
+      "Light surf can still hide rip current cuts. Read the water before wading.",
+      "Clear water means pompano see heavy rigs. Downsize hooks and floats when the bite gets picky.",
+      "Afternoon sea breeze often adds side sweep. Carry pyramid and sputnik sinkers.",
+      "Hot sand and long beach walks punish overpacked carts.",
+    ],
+    highlights: [
+      "Spring beach troughs produce pompano and whiting on sand fleas, shrimp, and shrimp-flavor Fishbites.",
+      "Flat Gulf mornings let you sight-fish snook cruising just off the sand.",
+      "Spanish mackerel and jacks show when bait schools get pushed tight to the beach.",
+      "Outgoing afternoon flow can make potholes and trough edges more defined.",
+      "This is the best family-friendly option when the inshore docks are too tight or technical.",
+    ],
+    tactics: [
+      {
+        title: "Pompano — two-hook trough rig",
+        detail:
+          "Use a two-hook pompano rig with small floats, No. 1 or No. 2 hooks, and enough pyramid or sputnik weight to hold. Tip with sand fleas, peeled shrimp, or shrimp Fishbites. Start in the first trough before casting past the bar.",
+      },
+      {
+        title: "Whiting — short cast",
+        detail:
+          "Downsize to small shrimp pieces on a light double-drop rig and cast just past the shore break. Whiting often feed inside the pompano line. If taps are constant but hookups are low, shorten the bait and hook gap.",
+      },
+      {
+        title: "Beach snook — low-light walk",
+        detail:
+          "At first light or late afternoon, walk slowly and throw a small white paddletail or live pilchard parallel to the sand. Keep the bait in the trough. Stop when you see shadows, then cast ahead of the fish instead of at it.",
+      },
+      {
+        title: "Mackerel — bait busts",
+        detail:
+          "Keep a silver spoon or small Got-Cha ready. When glass minnows or sardines shower, cast to the edge of the bust and retrieve fast. Add a short bite leader if cutoffs start.",
+      },
+    ],
+    primarySpecies: ["pompano", "whiting", "snook", "spanish-mackerel"],
+    preferredTides: ["outgoing", "incoming"],
+    preferredWindDirections: ["E", "SE", "NE"],
+    avoidWindDirections: ["W", "SW", "NW"],
+    idealWaveRangeFt: [0.5, 2],
+    idealWaterTempRangeF: [64, 80],
+    lightPreference: "day",
+  },
+
+  // ═══════════════════════════════════════════════════════════
+  //  REGION 6: Treasure Coast & Palm Beach
   // ═══════════════════════════════════════════════════════════
   {
     slug: "fort-pierce-inlet",
@@ -1261,7 +1570,7 @@ export const spots: SpotDefinition[] = [
   },
 
   // ═══════════════════════════════════════════════════════════
-  //  REGION 6: Jacksonville & Northeast
+  //  REGION 7: Jacksonville & Northeast
   // ═══════════════════════════════════════════════════════════
   {
     slug: "jacksonville-beach-pier",
@@ -1404,9 +1713,9 @@ export const ruleCards: RuleCard[] = [
   {
     title: "Snook window",
     summary:
-      "FWC says east coast snook harvest is open Feb. 1-May 31 and Sept. 1-Dec. 14, with a permit required if you are taking snook.",
+      "FWC manages snook by coast and region. Atlantic and Gulf harvest windows differ, and a snook permit is required if you are taking fish.",
     source: "FWC",
-    href: "https://myfwc.com/news/all-news/rec-snook-harvest-0126/",
+    href: "https://myfwc.com/fishing/saltwater/recreational/snook/",
   },
   {
     title: "Indian River Lagoon redfish",

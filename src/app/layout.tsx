@@ -39,19 +39,19 @@ export const metadata: Metadata = {
     template: "%s | Bite Atlas",
   },
   description:
-    "Live Florida fishing intelligence — real-time spot scores, tide-matched tactics, species guides, and bait shop directory across Space Coast, Indian River, Daytona, Tampa Bay, Treasure Coast, and Jacksonville.",
+    "Live Florida fishing intelligence — real-time spot scores, tide-matched tactics, species guides, and bait shop directory across Space Coast, Indian River, Daytona, Tampa Bay, Anna Maria/Sarasota, Treasure Coast, and Jacksonville.",
   openGraph: {
     type: "website",
     siteName: "Bite Atlas",
     title: "Bite Atlas | Florida Fishing Intelligence",
     description:
-      "AI-scored fishing spots across 6 Florida regions. Live conditions, detailed tactics, and real bait shop intel.",
+      "AI-scored fishing spots across 7 Florida regions. Live conditions, detailed tactics, and real bait shop intel.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Bite Atlas | Florida Fishing Intelligence",
     description:
-      "AI-scored fishing spots across 6 Florida regions. Live conditions, detailed tactics, and real bait shop intel.",
+      "AI-scored fishing spots across 7 Florida regions. Live conditions, detailed tactics, and real bait shop intel.",
   },
   appleWebApp: {
     capable: true,

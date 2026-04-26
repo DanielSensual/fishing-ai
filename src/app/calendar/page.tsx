@@ -8,7 +8,7 @@ import AnimationProvider from "../components/AnimationProvider";
 export const metadata: Metadata = {
   title: "Florida Fishing Calendar — What's Biting by Month",
   description:
-    "Month-by-month Florida saltwater fishing calendar. Know exactly which species are running, what tactics to use, and where to fish across all 6 regions — January through December.",
+    "Month-by-month Florida saltwater fishing calendar. Know exactly which species are running, what tactics to use, and where to fish across every supported region — January through December.",
   openGraph: {
     title: "Florida Fishing Calendar | Bite Atlas",
     description:

@@ -8,7 +8,7 @@ import AnimationProvider from "../components/AnimationProvider";
 export const metadata: Metadata = {
   title: "Florida Fishing Species Guide",
   description:
-    "Complete species guide for Florida saltwater fishing — 14 species with FWC regulations, seasonal patterns, tackle recommendations, and where to find them across 6 regions.",
+    "Complete species guide for Florida saltwater fishing — 14 species with FWC regulations, seasonal patterns, tackle recommendations, and where to find them across every supported region.",
   openGraph: {
     title: "Florida Fishing Species Guide | Bite Atlas",
     description:
@@ -46,7 +46,7 @@ export default function SpeciesIndexPage() {
           <span className="eyebrow">Species Intelligence</span>
           <h1>Florida Fishing Species Guide</h1>
           <p>
-            14 saltwater species across 6 Florida regions — FWC regulations,
+            14 saltwater species across every supported Florida region — FWC regulations,
             seasonal peaks, recommended rigs, and which spots to target.
           </p>
         </div>

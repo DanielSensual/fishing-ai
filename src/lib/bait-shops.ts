@@ -118,6 +118,35 @@ export const baitShops: BaitShop[] = [
     mapsUrl: "https://maps.google.com/?q=Skyway+Bait+Tackle+Palmetto",
   },
 
+  // ── Anna Maria & Sarasota ──
+  {
+    name: "Island Discount Tackle",
+    region: "anna-maria-sarasota",
+    address: "5503 Marina Dr, Holmes Beach, FL 34217",
+    phone: "(941) 779-2838",
+    hours: "Daily 7 AM – 5 PM",
+    carries: ["Live shrimp", "Frozen bait", "Pompano rigs", "Fluorocarbon leader", "Local reports"],
+    mapsUrl: "https://maps.google.com/?q=Island+Discount+Tackle+5503+Marina+Dr+Holmes+Beach",
+  },
+  {
+    name: "Annie's Bait & Tackle",
+    region: "anna-maria-sarasota",
+    address: "4334 127th St W, Cortez, FL 34215",
+    phone: "(941) 794-3580",
+    hours: "Mon–Thu 6:30 AM – 6 PM · Fri–Sat 6 AM – 8 PM · Sun 6 AM – 6 PM",
+    carries: ["Live shrimp", "Frozen bait", "Bridge tackle", "Ice", "Food"],
+    mapsUrl: "https://maps.google.com/?q=Annies+Bait+Tackle+Cortez+FL",
+  },
+  {
+    name: "CB's Saltwater Outfitters",
+    region: "anna-maria-sarasota",
+    address: "1249 Stickney Point Rd, Sarasota, FL 34242",
+    phone: "(941) 349-4400",
+    hours: "Daily 7 AM – 6 PM",
+    carries: ["Live shrimp", "Frozen bait", "Inshore tackle", "Boat rentals", "Charters"],
+    mapsUrl: "https://maps.google.com/?q=CBs+Saltwater+Outfitters+Sarasota",
+  },
+
   // ── Treasure Coast & Palm Beach ──
   {
     name: "Jupiter Bait & Tackle",

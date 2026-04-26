@@ -486,7 +486,7 @@ function getSpeciesSeasonBoost(species: SpeciesDefinition, now: Date): number {
   return species.months.includes(currentMonth) ? 6 : -10;
 }
 
-function getSnookStatus(now: Date): string {
+function getSnookStatus(now: Date, coast: RegionConfig["coast"]): string {
   const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: EASTERN_TIME_ZONE,
     month: "numeric",
@@ -496,12 +496,15 @@ function getSnookStatus(now: Date): string {
   const day = Number(parts.find((part) => part.type === "day")?.value ?? "1");
   const value = month * 100 + day;
 
-  const inOpenSpring = value >= 201 && value <= 531;
-  const inOpenFall = value >= 901 && value <= 1214;
+  const inOpenSpring =
+    coast === "gulf" ? value >= 301 && value <= 430 : value >= 201 && value <= 531;
+  const inOpenFall =
+    coast === "gulf" ? value >= 901 && value <= 1130 : value >= 901 && value <= 1214;
+  const coastLabel = coast === "gulf" ? "Gulf coast" : "Atlantic coast";
 
   return inOpenSpring || inOpenFall
-    ? "Harvest open on Florida's east coast right now; snook permit required if keeping fish."
-    : "Harvest closed right now; treat snook as a low-light catch-and-release target until the next east coast opening.";
+    ? `Harvest open on Florida's ${coastLabel} right now; snook permit required if keeping fish.`
+    : `Harvest closed on Florida's ${coastLabel} right now; treat snook as a low-light catch-and-release target until the next opening.`;
 }
 
 function describeNextWindow(
@@ -674,6 +677,7 @@ function scoreSpot(
 function buildSpeciesOutlook(
   spotScores: SpotScore[],
   now: Date,
+  coast: RegionConfig["coast"],
 ): SpeciesOutlook[] {
   return Object.values(speciesCatalog)
     .map((species) => {
@@ -688,7 +692,7 @@ function buildSpeciesOutlook(
       const tone: SpeciesOutlook["tone"] =
         boostedScore >= 75 ? "go" : boostedScore >= 60 ? "window" : "hold";
       const legalNote =
-        species.key === "snook" ? getSnookStatus(now) : species.legalNote;
+        species.key === "snook" ? getSnookStatus(now, coast) : species.legalNote;
 
       return {
         species: {
@@ -712,6 +716,7 @@ function buildOverview(
   tideStage: TideStage,
   waterTempF: number | null,
   activeAlerts: string[],
+  region: RegionConfig,
 ): DashboardData["overview"] {
   if (!topSpot) {
     return {
@@ -727,7 +732,7 @@ function buildOverview(
     return {
       headline: `Fish ${topSpot.spot.name} first`,
       status: "Go",
-      summary: `Cape is fishable right now with ${nearshoreBuoy?.waveHeightFt?.toFixed(1) ?? "?"} ft nearshore surf, ${tideStage} tide, and roughly ${waterTempF?.toFixed(1) ?? "?"}°F water. ${activeAlerts.length ? "There are active marine alerts, so fish the clean window and keep the exit easy." : topSpot.bestWindow}.`,
+      summary: `${region.shortName} is fishable right now with ${nearshoreBuoy?.waveHeightFt?.toFixed(1) ?? "?"} ft nearshore surf, ${tideStage} tide, and roughly ${waterTempF?.toFixed(1) ?? "?"}°F water. ${activeAlerts.length ? "There are active marine alerts, so fish the clean window and keep the exit easy." : topSpot.bestWindow}.`,
       topSpot,
     };
   }
@@ -835,13 +840,14 @@ export async function getDashboardData(regionSlug?: string): Promise<DashboardDa
     )
     .sort((left, right) => right.score - left.score);
 
-  const speciesOutlook = buildSpeciesOutlook(spotScores, now);
+  const speciesOutlook = buildSpeciesOutlook(spotScores, now, region.coast);
   const overview = buildOverview(
     spotScores[0] ?? null,
     nearshoreBuoy,
     tideStage,
     currentWaterTempF,
     activeAlerts,
+    region,
   );
 
   return {
