@@ -24,6 +24,10 @@
 .DS_Store
 *.pem
 
+# local nested checkout from earlier repo layout
+/fishing-ai/
+/AppStoreScreenshots/resized/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

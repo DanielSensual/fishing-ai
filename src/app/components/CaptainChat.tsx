@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { usePathname } from "next/navigation";
 
 interface Message {
   role: "user" | "captain";
@@ -19,6 +20,7 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 export default function CaptainChat() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -40,6 +42,16 @@ export default function CaptainChat() {
     }
   }, [isOpen]);
 
+  function getRouteContext() {
+    const regionMatch = pathname.match(/^\/region\/([^/]+)/);
+    const spotMatch = pathname.match(/^\/spots\/([^/]+)/);
+
+    return {
+      regionSlug: regionMatch?.[1],
+      spotSlug: spotMatch?.[1],
+    };
+  }
+
   async function sendMessage(question: string) {
     if (!question.trim() || isLoading) return;
 
@@ -52,7 +64,10 @@ export default function CaptainChat() {
       const res = await fetch("/api/captain", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: question.trim() }),
+        body: JSON.stringify({
+          question: question.trim(),
+          ...getRouteContext(),
+        }),
       });
 
       const data = await res.json();
@@ -127,8 +142,8 @@ export default function CaptainChat() {
           {messages.length === 0 && (
             <div className="captain-panel__welcome">
               <p>
-                Ask me anything about fishing Cape Canaveral right now.
-                I have live NOAA conditions and Google Search access.
+                Ask me anything about fishing this region right now. I have
+                live NOAA conditions and Google Search access.
               </p>
               <div className="captain-panel__suggestions">
                 {SUGGESTED_QUESTIONS.map((q) => (

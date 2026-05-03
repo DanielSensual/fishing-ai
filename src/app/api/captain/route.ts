@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { askCaptain } from "@/lib/gemini";
-import { getDashboardData } from "@/lib/fishing-data";
+import { getDashboardData, getSpotBySlug } from "@/lib/fishing-data";
+import { getDefaultRegion, getRegionBySlug } from "@/lib/regions";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
+
+const SLUG_PATTERN = /^[a-z0-9-]+$/;
 
 /* ─── In-Memory Sliding Window Rate Limiter ─── */
 
@@ -39,6 +42,15 @@ function checkRateLimit(ip: string): number | null {
   recent.push(now);
   requestLog.set(ip, recent);
   return null;
+}
+
+function readOptionalSlug(value: unknown): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const slug = value.trim();
+  return SLUG_PATTERN.test(slug) ? slug : undefined;
 }
 
 /** Periodic sweep to prevent unbounded memory growth */
@@ -82,6 +94,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const question = body.question;
+    const requestedRegionSlug = readOptionalSlug(body.regionSlug);
+    const requestedSpotSlug = readOptionalSlug(body.spotSlug);
 
     if (!question || typeof question !== "string" || question.length > 500) {
       return NextResponse.json(
@@ -97,11 +111,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Fetch live conditions
-    const dashboard = await getDashboardData();
+    const spot = requestedSpotSlug ? getSpotBySlug(requestedSpotSlug) : undefined;
+    const region =
+      (spot ? getRegionBySlug(spot.region) : undefined) ??
+      (requestedRegionSlug ? getRegionBySlug(requestedRegionSlug) : undefined) ??
+      getDefaultRegion();
+
+    // Fetch live conditions for the active route context.
+    const dashboard = await getDashboardData(region.slug);
 
     // Ask the Captain
-    const result = await askCaptain(question, dashboard);
+    const result = await askCaptain(question, dashboard, region);
 
     return NextResponse.json({
       text: result.text,
@@ -115,6 +135,7 @@ export async function POST(request: NextRequest) {
           : null,
         topSpot: dashboard.overview.topSpot?.spot.name ?? null,
         topScore: dashboard.overview.topSpot?.score ?? null,
+        region: region.name,
       },
     });
   } catch (error) {

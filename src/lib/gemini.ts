@@ -2,10 +2,14 @@ import "server-only";
 
 import { GoogleGenAI } from "@google/genai";
 import type { DashboardData } from "./types";
+import type { RegionConfig } from "./regions";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
 
-function buildConditionsContext(dashboard: DashboardData): string {
+function buildConditionsContext(
+  dashboard: DashboardData,
+  region: RegionConfig
+): string {
   const c = dashboard.conditions;
   const spots = dashboard.spotScores
     .map(
@@ -36,11 +40,12 @@ function buildConditionsContext(dashboard: DashboardData): string {
       : "Marine forecast unavailable";
 
   return `
-LIVE CONDITIONS — Cape Canaveral, FL (${new Date().toLocaleString("en-US", { timeZone: "America/New_York" })})
+LIVE CONDITIONS — ${region.name}, FL (${new Date().toLocaleString("en-US", { timeZone: "America/New_York" })})
 
-WATER: ${c.currentWaterTempF?.toFixed(1) ?? "?"}°F (NOAA Trident Pier)
-NEARSHORE WAVE: ${c.nearshoreBuoy?.waveHeightFt?.toFixed(1) ?? "?"} ft, ${c.nearshoreBuoy?.dominantPeriodSec ?? "?"}s period (NDBC 41113)
-OFFSHORE WAVE: ${c.offshoreBuoy?.waveHeightFt?.toFixed(1) ?? "?"} ft (NDBC 41009)
+REGION: ${region.name} (${region.coast} coast)
+WATER: ${c.currentWaterTempF?.toFixed(1) ?? "?"}°F (NOAA station ${region.waterTempStation})
+NEARSHORE WAVE: ${c.nearshoreBuoy?.waveHeightFt?.toFixed(1) ?? "?"} ft, ${c.nearshoreBuoy?.dominantPeriodSec ?? "?"}s period (${region.buoyNearshore ? `NDBC ${region.buoyNearshore}` : "no nearshore buoy"})
+OFFSHORE WAVE: ${c.offshoreBuoy?.waveHeightFt?.toFixed(1) ?? "?"} ft (${region.buoyOffshore ? `NDBC ${region.buoyOffshore}` : "no offshore buoy"})
 WIND: ${c.currentWindDirection ?? "?"} ${c.currentWindSpeedMph ?? "?"} mph
 AIR: ${c.currentAirTempF ?? "?"}°F — ${c.currentForecast ?? "?"}
 TIDE: ${c.tideStage}${c.nextTide ? ` → next ${c.nextTide.type === "H" ? "high" : "low"} ${c.nextTide.localTimeLabel}` : ""}
@@ -58,10 +63,11 @@ OVERVIEW: ${dashboard.overview.headline} — ${dashboard.overview.summary}
 `.trim();
 }
 
-const SYSTEM_PROMPT = `You are "Captain" — an AI fishing advisor built into the Bite Atlas command deck for Cape Canaveral, Florida.
+function buildSystemPrompt(region: RegionConfig): string {
+  return `You are "Captain" — an AI fishing advisor built into the Bite Atlas command deck for ${region.name}, Florida.
 
 Your personality:
-- Direct, concise, confident — like a fishing guide who has fished the Space Coast for 20 years
+- Direct, concise, confident — like a fishing guide who knows this Florida region well
 - Use plain English, not academic language
 - Give specific, actionable calls: which spot, which tide window, which species to target, which rig to use
 - When conditions are bad, say so honestly — "hold" means hold, don't sugarcoat
@@ -78,23 +84,26 @@ Rules:
 - Include tide timing, wind direction impact, and species viability
 - If asked about regulations, always direct users to verify with FWC (myfwc.com)
 - Keep responses under 300 words unless a detailed trip plan is requested
-- Use the scoring: 75+ = GO, 60-74 = WINDOW, below 60 = HOLD`;
+- Use the scoring: 75+ = GO, 60-74 = WINDOW, below 60 = HOLD
+- Stay anchored to ${region.name}; do not answer as if every user is fishing Cape Canaveral.`;
+}
 
 export async function askCaptain(
   question: string,
-  dashboard: DashboardData
+  dashboard: DashboardData,
+  region: RegionConfig
 ): Promise<{
   text: string;
   sources: Array<{ title: string; url: string }>;
   searchQueries: string[];
 }> {
-  const conditionsContext = buildConditionsContext(dashboard);
+  const conditionsContext = buildConditionsContext(dashboard, region);
 
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: `${conditionsContext}\n\n---\n\nUser question: ${question}`,
     config: {
-      systemInstruction: SYSTEM_PROMPT,
+      systemInstruction: buildSystemPrompt(region),
       tools: [{ googleSearch: {} }],
       temperature: 0.7,
     },
