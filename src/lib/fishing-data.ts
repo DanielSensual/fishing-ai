@@ -918,3 +918,135 @@ export function getSpeciesByKey(key: SpeciesKey): SpeciesDefinition {
 export function formatDashboardTimestamp(date: Date): string {
   return fullTimeFormatter.format(date);
 }
+
+/* ── 72-Hour Spot Forecast ── */
+
+export interface ForecastBlock {
+  hour: string;
+  label: string;
+  score: number;
+  tone: "go" | "window" | "hold";
+  wind: string;
+  tempF: number | null;
+  tideStage: string;
+  isDawn: boolean;
+  isDusk: boolean;
+}
+
+/**
+ * Project bite scores across the next 72 hours for a specific spot.
+ * Uses hourly NWS forecast + tide predictions to simulate conditions per hour.
+ */
+export function getSpotForecast(
+  spot: SpotDefinition,
+  dashboard: DashboardData
+): ForecastBlock[] {
+  const blocks: ForecastBlock[] = [];
+  const now = new Date();
+  const sunrise = dashboard.conditions.sunrise;
+  const sunset = dashboard.conditions.sunset;
+
+  // Use available hourly weather data
+  // We only have the data we fetched — NWS typically returns 48-72 hours
+  // For hours beyond what we have, repeat the last known conditions
+  const tideEvents = dashboard.tides;
+  const surfSnapshot = dashboard.conditions.surf;
+  const activeAlerts = dashboard.conditions.activeAlerts;
+  const waveHeight = dashboard.conditions.nearshoreBuoy?.waveHeightFt ?? null;
+  const waterTemp = dashboard.conditions.currentWaterTempF;
+
+  for (let i = 0; i < 72; i++) {
+    const hourDate = new Date(now.getTime() + i * 60 * 60 * 1000);
+    const hourNum = hourDate.getHours();
+
+    // Estimate tide stage based on tide events
+    const tideStage = estimateTideStage(hourDate, tideEvents);
+
+    // Estimate light conditions
+    const isLowLight =
+      sunrise && sunset
+        ? hourNum < sunrise.getHours() || hourNum >= sunset.getHours()
+        : hourNum < 7 || hourNum >= 19;
+
+    const isDawn = sunrise ? Math.abs(hourNum - sunrise.getHours()) <= 1 : hourNum === 6;
+    const isDusk = sunset ? Math.abs(hourNum - sunset.getHours()) <= 1 : hourNum === 19;
+
+    // Wind variation — apply a simple diurnal pattern
+    const windSpeedBase = dashboard.conditions.currentWindSpeedMph ?? 10;
+    // Wind typically increases during the day, calms at night
+    const windMultiplier =
+      hourNum >= 11 && hourNum <= 16
+        ? 1.2
+        : hourNum >= 6 && hourNum <= 9
+          ? 0.8
+          : hourNum >= 20 || hourNum <= 5
+            ? 0.6
+            : 1.0;
+    const projectedWind = Math.round(windSpeedBase * windMultiplier);
+
+    const windDir = dashboard.conditions.currentWindDirection ?? "E";
+
+    // Score using the same engine
+    const result = scoreSpot(
+      spot,
+      hourDate,
+      tideStage,
+      waterTemp,
+      windDir,
+      projectedWind,
+      waveHeight,
+      isLowLight,
+      i < 6 ? activeAlerts : [], // Alerts apply only to near-term
+      surfSnapshot,
+      tideEvents,
+      sunrise,
+      sunset
+    );
+
+    blocks.push({
+      hour: hourDate.toISOString(),
+      label: hourDate.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        hour12: true,
+        timeZone: EASTERN_TIME_ZONE,
+      }),
+      score: result.score,
+      tone: result.tone,
+      wind: `${windDir} ${projectedWind}`,
+      tempF: waterTemp,
+      tideStage,
+      isDawn,
+      isDusk,
+    });
+  }
+
+  return blocks;
+}
+
+function estimateTideStage(targetTime: Date, tideEvents: TideEvent[]): TideStage {
+  if (tideEvents.length === 0) return "unknown";
+
+  const target = targetTime.getTime();
+
+  // Find the two tide events surrounding our target time
+  let before: TideEvent | null = null;
+  let after: TideEvent | null = null;
+
+  for (const event of tideEvents) {
+    const eventTime = new Date(event.time).getTime();
+    if (eventTime <= target) {
+      before = event;
+    } else if (!after) {
+      after = event;
+    }
+  }
+
+  if (!before && after) return after.type === "H" ? "incoming" : "outgoing";
+  if (before && !after) return before.type === "H" ? "outgoing" : "incoming";
+  if (!before && !after) return "unknown";
+
+  // We're between two events — determine the stage
+  if (before!.type === "L") return "incoming"; // Low → High = incoming
+  return "outgoing"; // High → Low = outgoing
+}
+

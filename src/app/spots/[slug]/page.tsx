@@ -8,14 +8,21 @@ import {
   getDashboardData,
   getSpeciesByKey,
   getSpotBySlug,
+  getSpotForecast,
 } from "@/lib/fishing-data";
 import { getRegionBySlug } from "@/lib/regions";
+import { spots } from "@/lib/spots";
+import { getUpcomingLaunches, hasImmediateLaunch } from "@/lib/launch-schedule";
 import AnimationProvider from "../../components/AnimationProvider";
 import ScoreArc from "../../components/ScoreArc";
 import MapWrapper from "../../components/MapWrapper";
 import GearRecommendations from "../../components/GearRecommendations";
 import TideChart from "../../components/TideChart";
 import MoonPhase from "../../components/MoonPhase";
+import ForecastTimeline from "../../components/ForecastTimeline";
+import LaunchAlert from "../../components/LaunchAlert";
+import LogbookButton from "../../components/LogbookButton";
+import SpotTripHistory from "../../components/SpotTripHistory";
 
 export const revalidate = 1800;
 
@@ -93,6 +100,22 @@ export default async function SpotPage({ params }: SpotPageProps) {
     dashboard.conditions.nearshoreBuoy?.waveHeightFt;
   const currentWindDirection = dashboard.conditions.currentWindDirection;
   const currentWindSpeedMph = dashboard.conditions.currentWindSpeedMph;
+
+  // v1.3: Forecast timeline, launch check, logbook conditions
+  const forecastBlocks = getSpotForecast(spot, dashboard);
+  const launches = spot.requiresLaunchCheck ? await getUpcomingLaunches() : [];
+  const showLaunchAlert = spot.requiresLaunchCheck && hasImmediateLaunch(launches);
+
+  const conditionsSnapshot = {
+    waterTempF: currentWaterTempF,
+    windDirection: currentWindDirection,
+    windSpeedMph: currentWindSpeedMph,
+    tideStage: dashboard.conditions.tideStage,
+    waveHeightFt: nearshoreWaveHeightFt ?? null,
+    surfCondition: dashboard.conditions.surf?.surfHeight ?? null,
+  };
+
+  const allSpots = spots.map((s) => ({ slug: s.slug, name: s.name, region: s.region }));
 
   const mapSpots = [
     {
@@ -174,6 +197,13 @@ export default async function SpotPage({ params }: SpotPageProps) {
         </div>
       </section>
 
+      {/* v1.3: Launch Alert */}
+      {showLaunchAlert && (
+        <section data-animate>
+          <LaunchAlert launches={launches} />
+        </section>
+      )}
+
       {/* Mini map zoomed to this spot */}
       <section className="section" data-animate>
         <MapWrapper
@@ -198,6 +228,11 @@ export default async function SpotPage({ params }: SpotPageProps) {
           sunset={dashboard.conditions.sunset?.toISOString()}
         />
         <MoonPhase />
+      </section>
+
+      {/* v1.3: 72-Hour Forecast Timeline */}
+      <section data-animate>
+        <ForecastTimeline blocks={forecastBlocks} spotName={spot.name} />
       </section>
 
       <section className="detail-grid" data-animate>
@@ -312,6 +347,25 @@ export default async function SpotPage({ params }: SpotPageProps) {
             })}
           </div>
         </article>
+
+        {/* v1.3: Personal Logbook */}
+        <article className="detail-card" data-animate>
+          <span className="eyebrow">Your data</span>
+          <h2>Log this trip</h2>
+          <p style={{ color: 'var(--ink-soft)', marginBottom: '16px' }}>
+            Track what worked and what didn&apos;t — your logbook builds
+            patterns no forecast can replicate.
+          </p>
+          <LogbookButton
+            spotSlug={spot.slug}
+            spotName={spot.name}
+            region={spot.region}
+            conditions={conditionsSnapshot}
+            spots={allSpots}
+          />
+        </article>
+
+        <SpotTripHistory spotSlug={spot.slug} />
       </section>
     </main>
   );

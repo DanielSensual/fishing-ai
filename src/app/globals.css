@@ -1780,3 +1780,733 @@ small, .eyebrow, .tone-chip, .tag, .spot-card__meta,
     grid-template-columns: 1fr;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   v1.3 — Personal Logbook
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Logbook Form ── */
+
+.logbook-form {
+  display: grid;
+  gap: 20px;
+  padding: 28px;
+  border-radius: var(--radius-xl);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.logbook-form__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logbook-form__header h3 {
+  font-size: 1.4rem;
+  color: #f0f6f8;
+}
+
+.logbook-form__close {
+  background: none;
+  border: none;
+  color: var(--ink-muted);
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.logbook-form__close:hover {
+  color: var(--alert);
+  background: rgba(232, 107, 74, 0.12);
+}
+
+.logbook-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.logbook-form__field {
+  display: grid;
+  gap: 8px;
+}
+
+.logbook-form__field input,
+.logbook-form__field select,
+.logbook-form__field textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(6, 13, 24, 0.7);
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-family: var(--font-body), system-ui, sans-serif;
+  transition: border-color 0.25s ease;
+}
+
+.logbook-form__field input:focus,
+.logbook-form__field select:focus,
+.logbook-form__field textarea:focus {
+  outline: none;
+  border-color: var(--tidal-teal);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+}
+
+.logbook-form__field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.logbook-form__locked {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(20, 184, 166, 0.2);
+  background: rgba(20, 184, 166, 0.06);
+  color: var(--tidal-teal);
+  font-weight: 600;
+}
+
+.logbook-form__species-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.logbook-species-chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logbook-species-chip:hover {
+  border-color: var(--glass-border-hover);
+  color: var(--ink);
+}
+
+.logbook-species-chip--active {
+  background: rgba(20, 184, 166, 0.08);
+}
+
+.logbook-species-chip--caught {
+  font-weight: 700;
+}
+
+.logbook-form__skunk-hint {
+  color: var(--gold);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.logbook-form__stars {
+  display: flex;
+  gap: 8px;
+}
+
+.logbook-star {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--glass-border);
+  transition: color 0.15s, transform 0.15s;
+  padding: 0;
+}
+
+.logbook-star:hover { transform: scale(1.2); }
+.logbook-star--active { color: var(--gold); }
+
+.logbook-form__conditions {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(20, 184, 166, 0.04);
+  border: 1px solid rgba(20, 184, 166, 0.1);
+}
+
+.logbook-form__conditions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.logbook-form__submit {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--tidal-teal), var(--deep-teal));
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.3);
+}
+
+.logbook-form__submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(20, 184, 166, 0.45);
+}
+
+.logbook-form__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Logbook CTA Button (spot pages) ── */
+
+.logbook-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  border-radius: 999px;
+  background: rgba(20, 184, 166, 0.06);
+  color: var(--tidal-teal);
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.logbook-cta:hover {
+  background: rgba(20, 184, 166, 0.14);
+  border-color: rgba(20, 184, 166, 0.4);
+  transform: translateY(-2px);
+}
+
+.logbook-saved {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--go);
+  font-weight: 700;
+}
+
+.logbook-saved button {
+  background: none;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 8px 16px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logbook-saved button:hover {
+  border-color: var(--tidal-teal);
+  color: var(--tidal-teal);
+}
+
+/* ── Logbook Empty State ── */
+
+.logbook-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  padding: 60px 32px;
+  border-radius: var(--radius-xl);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+}
+
+.logbook-empty__icon {
+  font-size: 3.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.logbook-empty h2 {
+  font-size: 1.8rem;
+  color: #f0f6f8;
+}
+
+.logbook-empty p {
+  color: var(--ink-soft);
+  max-width: 48ch;
+}
+
+.logbook-empty__actions {
+  display: flex;
+  gap: 14px;
+}
+
+/* ── Logbook Stats Ribbon ── */
+
+.logbook-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.logbook-filters {
+  display: flex;
+  gap: 6px;
+}
+
+.logbook-filter {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logbook-filter:hover {
+  border-color: var(--glass-border-hover);
+  color: var(--ink);
+}
+
+.logbook-filter--active {
+  border-color: var(--tidal-teal);
+  color: var(--tidal-teal);
+  background: rgba(20, 184, 166, 0.08);
+}
+
+.logbook-io {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.logbook-import-btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logbook-import-btn:hover {
+  border-color: var(--glass-border-hover);
+  color: var(--ink);
+}
+
+/* ── Logbook Trip List ── */
+
+.logbook-list {
+  display: grid;
+  gap: 14px;
+}
+
+.logbook-entry {
+  display: grid;
+  gap: 12px;
+  padding: 22px 26px;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s;
+}
+
+.logbook-entry:hover {
+  border-color: var(--glass-border-hover);
+}
+
+.logbook-entry__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.logbook-entry__spot {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #f0f6f8;
+  display: block;
+}
+
+.logbook-entry__date {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.logbook-entry__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logbook-entry__rating {
+  color: var(--gold);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+}
+
+.logbook-entry__delete {
+  background: none;
+  border: none;
+  color: var(--ink-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  opacity: 0.5;
+}
+
+.logbook-entry:hover .logbook-entry__delete { opacity: 1; }
+.logbook-entry__delete:hover { color: var(--alert); background: rgba(232, 107, 74, 0.12); }
+
+.logbook-entry__species {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.logbook-entry__tackle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.logbook-entry__notes {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  border-left: 2px solid var(--glass-border);
+  padding-left: 14px;
+}
+
+.logbook-entry__conditions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.logbook-condition-pill {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(100, 180, 220, 0.08);
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Spot Page Trip History ── */
+
+.logbook-history {
+  display: grid;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.logbook-history__entry {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 180, 220, 0.06);
+}
+
+.logbook-history__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logbook-history__rating {
+  color: var(--gold);
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+}
+
+.logbook-history__species { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.logbook-history__skunk {
+  color: var(--ink-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.logbook-history__notes {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.logbook-history__conditions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
+/* ── Logbook Patterns ── */
+
+.logbook-patterns {
+  display: grid;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.logbook-pattern {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(100, 180, 220, 0.06);
+}
+
+.logbook-pattern__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logbook-pattern p {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+
+.logbook-pattern small {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   v1.3 — 72-Hour Forecast Timeline
+   ═══════════════════════════════════════════════════════════ */
+
+.forecast-timeline__scroll {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  padding: 12px 0 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--glass-border) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.forecast-timeline__scroll::-webkit-scrollbar { height: 4px; }
+.forecast-timeline__scroll::-webkit-scrollbar-track { background: transparent; }
+.forecast-timeline__scroll::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
+
+.forecast-block-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.forecast-day-label {
+  font-size: 0.65rem;
+  font-family: var(--font-mono), monospace;
+  color: var(--tidal-teal);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+
+.forecast-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 36px;
+  padding: 6px 4px;
+  border-radius: 8px;
+  cursor: default;
+  transition: background 0.2s;
+}
+
+.forecast-block:hover { background: rgba(255, 255, 255, 0.04); }
+
+.forecast-block__time {
+  font-size: 0.6rem;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.forecast-block__bar {
+  width: 10px;
+  height: 60px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.forecast-block__fill {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.forecast-block--go .forecast-block__fill { background: var(--go); }
+.forecast-block--window .forecast-block__fill { background: var(--window); }
+.forecast-block--hold .forecast-block__fill { background: var(--hold); }
+
+.forecast-block__score {
+  font-size: 0.65rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.forecast-block--go .forecast-block__score { color: var(--go); }
+.forecast-block--window .forecast-block__score { color: var(--window); }
+.forecast-block--hold .forecast-block__score { color: var(--hold); }
+
+.forecast-block__light {
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.forecast-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.forecast-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+
+.forecast-legend__item::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.forecast-legend__item--go::before { background: var(--go); }
+.forecast-legend__item--window::before { background: var(--window); }
+.forecast-legend__item--hold::before { background: var(--hold); }
+
+/* ═══════════════════════════════════════════════════════════
+   v1.3 — Launch Alert
+   ═══════════════════════════════════════════════════════════ */
+
+.launch-alert {
+  display: flex;
+  gap: 18px;
+  padding: 22px 26px;
+  border-radius: var(--radius-lg);
+  background: rgba(232, 107, 74, 0.06);
+  border: 1px solid rgba(232, 107, 74, 0.2);
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.launch-alert__icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.launch-alert__content {
+  display: grid;
+  gap: 10px;
+}
+
+.launch-alert__content > strong {
+  color: var(--alert);
+  font-size: 1rem;
+}
+
+.launch-alert__entry {
+  display: grid;
+  gap: 2px;
+}
+
+.launch-alert__name {
+  color: #f0f6f8;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.launch-alert__time {
+  color: var(--gold);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.launch-alert__entry small {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+.launch-alert__disclaimer {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+.launch-alert__disclaimer a {
+  color: var(--tidal-teal);
+  text-decoration: underline;
+}
+
+/* ── v1.3 Mobile Responsive ── */
+
+@media (max-width: 700px) {
+  .logbook-form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .logbook-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .logbook-io {
+    margin-left: 0;
+  }
+
+  .forecast-block {
+    width: 30px;
+  }
+
+  .forecast-block__bar {
+    height: 48px;
+  }
+
+  .launch-alert {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

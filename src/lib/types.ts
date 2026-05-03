@@ -176,3 +176,54 @@ export interface DashboardData {
   rules: RuleCard[];
   sources: SourceLink[];
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Personal Logbook — v1.3
+   ═══════════════════════════════════════════════════════════ */
+
+export interface ConditionsSnapshot {
+  waterTempF: number | null;
+  windDirection: string | null;
+  windSpeedMph: number | null;
+  tideStage: TideStage;
+  waveHeightFt: number | null;
+  surfCondition: string | null;
+}
+
+export interface TripLog {
+  id: string;
+  /** ISO date string */
+  date: string;
+  spotSlug: string;
+  spotName: string;
+  region: string;
+  speciesTargeted: SpeciesKey[];
+  speciesCaught: SpeciesKey[];
+  bait: string;
+  rig: string;
+  notes: string;
+  /** 1-5 star rating */
+  rating: number;
+  /** Was this a skunk (no fish caught)? */
+  skunk: boolean;
+  /** Conditions auto-captured at log time */
+  conditions: ConditionsSnapshot | null;
+  /** Created timestamp (ISO) */
+  createdAt: string;
+}
+
+export interface TripPattern {
+  label: string;
+  detail: string;
+  confidence: number;
+  tripCount: number;
+}
+
+export interface LogbookStats {
+  totalTrips: number;
+  totalCatches: number;
+  totalSkunks: number;
+  topSpot: { name: string; count: number } | null;
+  topSpecies: { name: string; count: number } | null;
+  averageRating: number;
+}

@@ -95,6 +95,7 @@ export default async function Home() {
             <Link href="/calendar">Calendar</Link>
             <Link href="/species">Species Guide</Link>
             <Link href="/gear">Gear Store</Link>
+            <Link href="/logbook">Logbook</Link>
             <a href="#bait-shops">Bait shops</a>
             <a href="#rules">Rules</a>
           </nav>
