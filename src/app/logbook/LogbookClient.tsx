@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import type { TripLog, TripPattern, LogbookStats } from "@/lib/types";
 import {
@@ -19,22 +19,17 @@ interface LogbookClientProps {
 }
 
 export default function LogbookClient({ spots }: LogbookClientProps) {
-  const [trips, setTrips] = useState<TripLog[]>([]);
-  const [stats, setStats] = useState<LogbookStats | null>(null);
-  const [patterns, setPatterns] = useState<TripPattern[]>([]);
+  const [trips, setTrips] = useState<TripLog[]>(() => getTrips());
+  const [stats, setStats] = useState<LogbookStats | null>(() => getStats());
+  const [patterns, setPatterns] = useState<TripPattern[]>(() => getPatterns());
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState<"all" | "catches" | "skunks">("all");
 
   const refresh = useCallback(() => {
-    const all = getTrips();
-    setTrips(all);
+    setTrips(getTrips());
     setStats(getStats());
     setPatterns(getPatterns());
   }, []);
-
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
 
   const filteredTrips = trips.filter((t) => {
     if (filter === "catches") return !t.skunk;

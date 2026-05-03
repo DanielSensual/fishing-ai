@@ -101,9 +101,6 @@ function getSolunarWindows(date: Date): {
 } {
   const age = getMoonAge(date);
   // Rough approximation: moon transit shifts ~50 min later each day
-  const dayOfYear = Math.floor(
-    (date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000,
-  );
   // Very rough moon transit estimate (this is simplified)
   const transitHour = (12 + (age * 0.8)) % 24;
   const underfootHour = (transitHour + 12) % 24;

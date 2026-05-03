@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getTripsForSpot } from "@/lib/logbook";
 import { speciesCatalog } from "@/lib/spots";
 import type { TripLog } from "@/lib/types";
@@ -10,11 +10,7 @@ interface SpotTripHistoryProps {
 }
 
 export default function SpotTripHistory({ spotSlug }: SpotTripHistoryProps) {
-  const [trips, setTrips] = useState<TripLog[]>([]);
-
-  useEffect(() => {
-    setTrips(getTripsForSpot(spotSlug));
-  }, [spotSlug]);
+  const [trips] = useState<TripLog[]>(() => getTripsForSpot(spotSlug));
 
   if (trips.length === 0) return null;
 
